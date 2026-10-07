@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Strategic HRM — Interactive Learning Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --purple:#a435f0;--purple-d:#8710d8;--ink:#1c1d1f;--ink2:#2d2f31;
+  --gray:#6a6f73;--line:#d1d7dc;--line2:#e9ebed;--bg:#fff;--bg2:#f7f9fa;
+  --star:#e59819;--green:#1e6055;--green-bg:#eceb98;--red:#b32d0f;
+  --purple-lt:#f7f0fd;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px;font-size:clamp(16px,0.9vw + 13px,19px)}
+body{font-family:'IBM Plex Sans Thai','Noto Sans SC',Inter,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;margin:0;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{line-height:1.3;margin:0 0 .5em;font-weight:700;letter-spacing:-.02em}
+h2{font-size:clamp(1.35rem,2vw,1.7rem)}
+h3{font-size:1.1rem}
+p{margin:0 0 .9em}
+a{color:var(--purple-d);text-decoration:none}
+.mut{color:var(--gray)}
+.wrap{max-width:1340px;margin:0 auto;padding:0 24px}
+
+/* ── TOP BAR ── */
+.topbar{position:fixed;top:0;left:0;right:0;height:62px;background:#fff;border-bottom:1px solid var(--line);z-index:900;display:flex;align-items:center;gap:14px;padding:0 18px}
+.brand{font-family:Inter,sans-serif;font-weight:800;font-size:1.05rem;color:var(--ink);cursor:pointer;border:0;background:none;white-space:nowrap;letter-spacing:-.04em}
+.brand span{color:var(--purple)}
+.burger{display:none;background:none;border:1px solid var(--line);border-radius:4px;width:36px;height:36px;cursor:pointer;font-size:1.1rem}
+.searchbox{flex:1;max-width:600px;display:flex;align-items:center;gap:9px;background:var(--bg2);border:1px solid var(--ink);border-radius:99px;padding:8px 16px}
+.searchbox input{border:0;background:none;outline:none;width:100%;font-family:inherit;font-size:.87rem;color:var(--ink)}
+.topnav{display:flex;align-items:center;gap:6px;margin-left:auto}
+.tlink{font-size:.83rem;color:var(--ink);padding:7px 10px;border-radius:4px;cursor:pointer;background:none;border:0;font-family:inherit;white-space:nowrap}
+.tlink:hover{color:var(--purple-d)}
+.seg{display:flex;border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.seg button{border:0;background:#fff;color:var(--ink);font-family:inherit;font-size:.76rem;font-weight:700;padding:7px 11px;cursor:pointer;border-right:1px solid var(--line)}
+.seg button:last-child{border-right:0}
+.seg button.on{background:var(--ink);color:#fff}
+.seg button:hover:not(.on){background:var(--bg2)}
+
+/* ── LAYOUT ── */
+.shell{display:grid;grid-template-columns:300px 1fr;margin-top:62px;min-height:calc(100vh - 62px)}
+.side{border-right:1px solid var(--line);background:#fff;position:sticky;top:62px;height:calc(100vh - 62px);overflow-y:auto}
+.side-head{padding:18px 18px 14px;border-bottom:1px solid var(--line)}
+.side-head h4{font-size:.95rem;margin:0 0 10px}
+.pbar{height:6px;background:var(--line2);border-radius:99px;overflow:hidden}
+.pbar>i{display:block;height:100%;background:var(--purple);width:0;transition:width .4s}
+.pmeta{font-size:.74rem;color:var(--gray);margin-top:7px;display:flex;justify-content:space-between}
+.sec-label{font-size:.72rem;font-weight:700;letter-spacing:.06em;color:var(--gray);padding:16px 18px 6px;text-transform:uppercase}
+.lec{display:flex;gap:11px;align-items:flex-start;padding:10px 18px;cursor:pointer;border-left:3px solid transparent;font-size:.84rem}
+.lec:hover{background:var(--bg2)}
+.lec.active{background:var(--purple-lt);border-left-color:var(--purple)}
+.lec input{margin:3px 0 0;accent-color:var(--purple);width:15px;height:15px;cursor:pointer;flex-shrink:0}
+.lec-t{flex:1}
+.lec-t b{display:block;font-weight:500;color:var(--ink)}
+.lec-t small{color:var(--gray);font-size:.72rem}
+.main{min-width:0;background:#fff}
+
+/* ── HERO ── */
+.hero{background:var(--ink);color:#fff;padding:40px 0 44px}
+.hero .wrap{max-width:900px;margin:0;padding-left:44px}
+.crumb{font-size:.76rem;color:#cec0fa;margin-bottom:12px}
+.hero h1{font-size:clamp(1.6rem,3vw,2.2rem);color:#fff;margin-bottom:12px}
+.hero p{color:#d1d7dc;font-size:.94rem;max-width:62ch}
+.rate{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:.8rem;margin-bottom:10px}
+.badge{background:var(--green-bg);color:var(--ink);font-weight:700;font-size:.72rem;padding:3px 8px;border-radius:3px}
+.stars{color:var(--star);font-weight:700}
+.hero-meta{font-size:.78rem;color:#d1d7dc;margin-top:14px}
+.hero-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+
+/* ── BUTTONS ── */
+.btn{font-family:inherit;font-size:.87rem;font-weight:700;border-radius:4px;padding:11px 18px;cursor:pointer;border:1px solid transparent;background:var(--ink);color:#fff;transition:filter .15s}
+.btn:hover{filter:brightness(1.35)}
+.btn.pp{background:var(--purple)}
+.btn.pp:hover{background:var(--purple-d);filter:none}
+.btn.out{background:#fff;color:var(--ink);border-color:var(--ink)}
+.btn.out:hover{background:var(--bg2);filter:none}
+.btn.sm{padding:7px 13px;font-size:.79rem}
+.btn:focus-visible,input:focus-visible,select:focus-visible,.card:focus-visible{outline:2px solid var(--purple);outline-offset:2px}
+
+/* ── SECTIONS ── */
+section{padding:38px 0}
+.sec-h{max-width:74ch;margin-bottom:22px}
+.sec-h p{color:var(--gray);font-size:.9rem;margin:0}
+
+/* ── COURSE CARDS ── */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:18px}
+.card{border:1px solid var(--line);background:#fff;cursor:pointer;text-align:left;font-family:inherit;color:inherit;padding:0;display:flex;flex-direction:column;transition:box-shadow .15s}
+.card:hover{box-shadow:0 2px 12px rgba(0,0,0,.16)}
+.thumb{height:106px;background:linear-gradient(135deg,#2d2f31,#5b2a86);display:flex;align-items:center;justify-content:center;font-size:2.1rem;position:relative}
+.thumb .cn{position:absolute;top:8px;left:10px;font-family:Inter;font-size:.68rem;font-weight:700;color:#fff;background:rgba(0,0,0,.42);padding:2px 7px;border-radius:3px}
+.card.done .thumb::after{content:'✓';position:absolute;top:8px;right:10px;background:var(--purple);color:#fff;width:21px;height:21px;border-radius:50%;display:grid;place-items:center;font-size:.8rem;font-weight:700}
+.cbody{padding:12px 13px 14px;display:flex;flex-direction:column;gap:5px;flex:1}
+.cbody h3{font-size:.95rem;margin:0;line-height:1.35}
+.cbody .sub{font-size:.73rem;color:var(--gray);font-family:Inter,sans-serif}
+.cbody .dsc{font-size:.79rem;color:var(--gray);margin:2px 0 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.crow{display:flex;align-items:center;gap:6px;font-size:.75rem;margin-top:4px}
+.crow .sc{font-weight:700;color:#8a6116}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:auto;padding-top:9px}
+.tag{font-size:.68rem;background:var(--bg2);border:1px solid var(--line);color:var(--ink2);padding:2px 7px;border-radius:3px;font-family:Inter,sans-serif}
+
+/* ── MODAL ── */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1200;display:none;padding:26px 14px;overflow-y:auto}
+.ov.on{display:block}
+.modal{max-width:900px;margin:0 auto;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.3)}
+.mhead{background:var(--ink);color:#fff;padding:20px 26px;display:flex;gap:14px;align-items:flex-start}
+.mhead .ic{font-size:1.7rem}
+.mhead h3{margin:0;color:#fff;font-size:1.18rem}
+.mhead small{color:#cec0fa;font-size:.76rem;font-family:Inter,sans-serif}
+.x{margin-left:auto;background:none;border:0;color:#fff;font-size:1.5rem;cursor:pointer;line-height:1;opacity:.85}
+.x:hover{opacity:1}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);padding:0 26px;flex-wrap:wrap;background:#fff}
+.tab{background:none;border:0;border-bottom:3px solid transparent;color:var(--gray);font-family:inherit;font-size:.85rem;font-weight:600;padding:13px 14px;cursor:pointer;margin-bottom:-1px}
+.tab.on{color:var(--ink);border-bottom-color:var(--ink)}
+.tab:hover{color:var(--ink)}
+.mbody{padding:22px 26px 30px}
+.kbox{border:1px solid var(--line);border-radius:5px;padding:14px 16px;margin-bottom:11px;background:#fff}
+.kbox h4{margin:0 0 5px;font-size:.95rem}
+.kbox p{margin:0;font-size:.86rem;color:var(--ink2)}
+.alert{background:var(--purple-lt);border:1px solid #d9c2f5;border-radius:5px;padding:14px 16px}
+.alert h4{margin:0 0 4px;font-size:.92rem;color:var(--purple-d)}
+.case{border:1px solid var(--line);border-radius:5px;padding:18px}
+.case .lb{display:inline-block;background:var(--ink);color:#fff;font-size:.7rem;font-weight:700;padding:2px 9px;border-radius:3px;margin-bottom:7px;font-family:Inter,sans-serif}
+ul.clean{margin:0;padding-left:20px;color:var(--ink2);font-size:.86rem}
+ul.clean li{margin-bottom:5px}
+
+/* ── FULLSCREEN OVERLAY (TOOLS / QUIZ / REPORT / CERT) ── */
+.fullscreen-ov{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:1100;display:none;padding:30px 16px;overflow-y:auto;backdrop-filter:blur(3px)}
+.fullscreen-ov.on{display:flex;align-items:flex-start;justify-content:center}
+.fullscreen-box{background:#fff;width:100%;max-width:1100px;border-radius:8px;box-shadow:0 12px 50px rgba(0,0,0,.35);overflow:hidden;margin:auto}
+.fs-head{background:var(--ink);color:#fff;padding:18px 24px;display:flex;align-items:center;gap:14px}
+.fs-head h3{margin:0;color:#fff;font-size:1.2rem}
+.fs-body{padding:28px;max-height:calc(85vh - 66px);overflow-y:auto}
+
+/* ── QUIZ ── */
+.q{border:1px solid var(--line);border-radius:5px;padding:18px;margin-bottom:13px}
+.q .qt{font-weight:600;margin-bottom:11px;font-size:.95rem}
+.q .qt small{display:block;color:var(--gray);font-weight:400;font-size:.75rem;margin-top:3px}
+.opt{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;font-family:inherit;font-size:.87rem;background:#fff;border:1px solid var(--line);color:var(--ink);border-radius:4px;padding:11px 14px;margin-bottom:8px;cursor:pointer}
+.opt:hover:not(:disabled){background:var(--bg2);border-color:var(--ink)}
+.opt i{width:16px;height:16px;border:2px solid var(--gray);border-radius:50%;flex-shrink:0;margin-top:3px;display:block}
+.opt.pick{border-color:var(--ink);background:var(--bg2)}
+.opt.pick i{border-color:var(--ink);background:radial-gradient(var(--ink) 40%,transparent 44%)}
+.opt.ok{border-color:var(--green);background:#eafaf1}
+.opt.ok i{border-color:var(--green);background:radial-gradient(var(--green) 40%,transparent 44%)}
+.opt.no{border-color:var(--red);background:#fdecea}
+.opt.no i{border-color:var(--red);background:radial-gradient(var(--red) 40%,transparent 44%)}
+.exp{font-size:.82rem;color:var(--ink2);background:var(--bg2);border-left:3px solid var(--purple);margin-top:9px;padding:10px 13px;display:none;border-radius:0 4px 4px 0}
+.exp.on{display:block}
+
+/* ── TOOLS ── */
+.tnav{display:flex;gap:2px;flex-wrap:wrap;border-bottom:1px solid var(--line);margin-bottom:20px}
+.tnav button{font-family:inherit;font-size:.82rem;font-weight:600;background:none;border:0;border-bottom:3px solid transparent;color:var(--gray);padding:11px 13px;cursor:pointer;margin-bottom:-1px}
+.tnav button.on{color:var(--ink);border-bottom-color:var(--ink)}
+.tnav button:hover{color:var(--ink)}
+.panel{display:none;border:1px solid var(--line);border-radius:6px;padding:24px}
+.panel.on{display:block}
+.panel>.desc{color:var(--gray);font-size:.87rem;max-width:76ch}
+label{display:block;font-size:.78rem;font-weight:600;color:var(--ink2);margin-bottom:5px}
+input[type=number],input[type=text],select{width:100%;font-family:inherit;font-size:.87rem;background:#fff;border:1px solid var(--ink);color:var(--ink);border-radius:4px;padding:9px 11px}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin:16px 0}
+.subh{font-size:.78rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--purple-d);margin:18px 0 0}
+table{width:100%;border-collapse:collapse;font-size:.83rem;margin-top:8px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--line2);text-align:left}
+th{color:var(--gray);font-weight:700;font-size:.74rem;text-transform:uppercase;letter-spacing:.03em;border-bottom:1px solid var(--line)}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.out{margin-top:18px;background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:18px}
+.out .big{font-size:1.75rem;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;font-family:Inter,sans-serif}
+.pill{display:inline-block;font-size:.72rem;font-weight:700;padding:3px 9px;border-radius:3px;background:var(--line2);color:var(--ink2)}
+.pill.g{background:#eafaf1;color:var(--green)}
+.pill.y{background:#fdf4e3;color:#8a6116}
+.pill.r{background:#fdecea;color:var(--red)}
+.row-del{background:none;border:0;color:var(--red);cursor:pointer;font-size:.95rem}
+
+/* ── REPORT ── */
+.rgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:14px;margin-bottom:22px}
+.stat{border:1px solid var(--line);border-radius:6px;padding:17px}
+.stat b{display:block;font-size:1.8rem;font-family:Inter,sans-serif;font-weight:800}
+.stat span{font-size:.79rem;color:var(--gray)}
+.chrow{display:grid;grid-template-columns:minmax(110px,250px) 1fr 54px;gap:12px;align-items:center;margin-bottom:8px;font-size:.83rem}
+.chrow .tr{height:8px;background:var(--line2);border-radius:99px;overflow:hidden}
+.chrow .tr>i{display:block;height:100%;border-radius:99px}
+
+/* ── CERT ── */
+.cert{border:3px double #b8912f;border-radius:4px;padding:clamp(26px,5vw,48px);text-align:center;background:#fffdf7}
+.cert .seal{font-size:2.3rem}
+.cert h3{font-family:Inter,sans-serif;letter-spacing:.14em;color:#8a6116;font-size:.86rem;text-transform:uppercase;margin-bottom:18px}
+.cert .nm{font-size:clamp(1.4rem,4vw,2rem);font-weight:800;border-bottom:1px solid var(--line);display:inline-block;padding:0 28px 7px;margin-bottom:13px}
+.cert .meta{color:var(--ink2);font-size:.86rem}
+.cfoot{display:flex;justify-content:space-around;margin-top:30px;flex-wrap:wrap;gap:18px;font-size:.76rem;color:var(--gray)}
+footer{border-top:1px solid var(--line);padding:26px 0 46px;color:var(--gray);font-size:.8rem}
+
+@media(max-width:980px){
+  .shell{grid-template-columns:1fr}
+  .side{position:fixed;top:62px;left:0;width:290px;z-index:880;transform:translateX(-100%);transition:transform .22s;box-shadow:2px 0 14px rgba(0,0,0,.14)}
+  .side.open{transform:none}
+  .burger{display:block}
+  .searchbox{display:none}
+  .hero .wrap{padding-left:24px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto}}
+@media print{
+  .topbar,.side,.hero,footer,.btn,.noprint,#toolsOv,#chapters,#quiz,#report,.fs-head{display:none!important}
+  .fullscreen-ov{position:static!important;background:none!important;padding:0!important;display:block!important;backdrop-filter:none!important}
+  .fullscreen-box{box-shadow:none!important;max-width:100%;margin:0}
+  .fs-body{padding:0!important;max-height:none!important;overflow:visible!important}
+  body{background:#fff;color:#111}
+  .cert{border-color:#b8912f}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="burger" onclick="document.getElementById('side').classList.toggle('open')">☰</button>
+  <button class="brand" onclick="scrollTo({top:0,behavior:'smooth'})">Strategic<span>HRM</span></button>
+  <div class="searchbox"><span>🔍</span><input id="srch" oninput="doSearch()" placeholder=""></div>
+  <div class="topnav">
+    <button class="tlink" data-k="navTool" onclick="openToolsModal()"></button>
+    <button class="tlink" data-k="navQuiz" onclick="openQuizModal()"></button>
+    <button class="tlink" data-k="navCert" onclick="openQuizModal('certsec')"></button>
+    <div class="seg"><button onclick="fontSize(-1)">A−</button><button onclick="fontSize(1)">A+</button></div>
+    <div class="seg" id="langbar">
+      <button data-l="th" onclick="setLang('th')">TH</button>
+      <button data-l="en" onclick="setLang('en')">EN</button>
+      <button data-l="zh" onclick="setLang('zh')">中文</button>
+    </div>
+  </div>
+</div>
+
+<div class="shell">
+  <aside class="side" id="side">
+    <div class="side-head">
+      <h4 data-k="sideTitle"></h4>
+      <div class="pbar"><i id="pbar"></i></div>
+      <div class="pmeta"><span id="pTxt">0 / 11</span><span id="pPct">0%</span></div>
+    </div>
+    <div class="sec-label" data-k="sideSec"></div>
+    <div id="lecList"></div>
+  </aside>
+
+  <main class="main">
+    <div class="hero">
+      <div class="wrap">
+        <div class="crumb" data-k="crumb"></div>
+        <h1 data-k="heroH1"></h1>
+        <p data-k="heroLead"></p>
+        <div class="rate" style="margin-top:14px">
+          <span class="badge" data-k="badge"></span>
+          <span class="stars">4.8 ★★★★★</span>
+          <span style="color:#cec0fa" data-k="ratings"></span>
+        </div>
+        <div class="hero-meta" data-k="heroMeta"></div>
+        <div class="hero-cta">
+          <button class="btn pp" data-k="btnStart" onclick="openM(0)"></button>
+          <button class="btn out" data-k="btnSkip" onclick="openToolsModal()"></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <section id="chapters">
+        <div class="sec-h"><h2 data-k="secChH"></h2><p data-k="secChP"></p></div>
+        <div id="grid" class="grid"></div>
+      </section>
+    </div>
+
+    <footer class="wrap"><p data-k="footer"></p></footer>
+  </main>
+</div>
+
+<!-- Fullscreen overlay: Interactive Tools -->
+<div class="fullscreen-ov" id="toolsOv" onclick="if(event.target===this)closeToolsModal()">
+  <div class="fullscreen-box">
+    <div class="fs-head">
+      <h3 data-k="secToolH"></h3>
+      <button class="x" onclick="closeToolsModal()" style="margin-left:auto">×</button>
+    </div>
+    <div class="fs-body">
+      <p class="mut" style="margin-top:0" data-k="secToolP"></p>
+      <div class="tnav" id="tnav"></div>
+      <div id="panels"></div>
+      <div id="toolPager" style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Fullscreen overlay: Quiz, Report & Certificate -->
+<div class="fullscreen-ov" id="quizOv" onclick="if(event.target===this)closeQuizModal()">
+  <div class="fullscreen-box">
+    <div class="fs-head">
+      <h3 data-k="secQuizH"></h3>
+      <button class="x" onclick="closeQuizModal()" style="margin-left:auto">×</button>
+    </div>
+    <div class="fs-body">
+      <section id="quiz" style="padding-top:0">
+        <div class="sec-h"><p data-k="secQuizP"></p></div>
+        <div id="quizBox"></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;align-items:center">
+          <button class="btn pp" data-k="btnGrade" onclick="grade()"></button>
+          <button class="btn out" data-k="btnReset" onclick="resetQuiz()"></button>
+          <span id="qStatus" class="mut" style="font-size:.82rem"></span>
+        </div>
+      </section>
+
+      <section id="report" style="border-top:1px solid var(--line)">
+        <div class="sec-h"><h2 data-k="secRepH"></h2><p data-k="secRepP"></p></div>
+        <div id="reportBox"></div>
+      </section>
+
+      <section id="certsec" style="border-top:1px solid var(--line)">
+        <div class="sec-h noprint"><h2 data-k="secCertH"></h2><p data-k="secCertP"></p></div>
+        <div id="certArea"></div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<div class="ov" id="ov" onclick="if(event.target===this)closeM()"><div class="modal" id="modal"></div></div>
+
+<script>
+/*══ 1. UI STRINGS ══*/
+const UI={
+th:{navTool:'เครื่องมือ',navQuiz:'แบบทดสอบ',navCert:'ใบประกาศ',searchPh:'ค้นหาบทเรียนหรือเครื่องมือ',
+ sideTitle:'เนื้อหาหลักสูตร',sideSec:'ส่วนที่ 1 · บทเรียนทั้งหมด 11 บท',
+ crumb:'การพัฒนาบุคลากร › ทรัพยากรมนุษย์ › Strategic HRM',
+ heroH1:'การบริหารทรัพยากรมนุษย์เชิงกลยุทธ์',
+ heroLead:'เรียนรู้ด้วยตนเอง 11 บท พร้อมเครื่องมือคำนวณ 9 ตัวที่ใช้ทำงานจริงได้ ตั้งแต่การวางแผนกำลังคน การประเมินค่างาน โครงสร้างเงินเดือน ไปจนถึงการพิสูจน์ผลตอบแทนการฝึกอบรม',
+ badge:'หลักสูตรแนะนำ',ratings:'(2,184 รีวิว) · ผู้เรียน 9,640 คน',
+ heroMeta:'อัปเดตล่าสุด 2568 · ภาษาไทย อังกฤษ จีน · เรียนจบได้ใน 6 ชั่วโมง',
+ btnStart:'เริ่มเรียนบทที่ 1',btnSkip:'ไปที่เครื่องมือคำนวณ',
+ secChH:'เนื้อหาในหลักสูตรนี้',secChP:'11 บทเรียน · แต่ละบทมีสาระสำคัญ เครื่องมือประจำบท กรณีศึกษา และแบบฝึกหัด กดที่การ์ดเพื่อเปิดบทเรียน',
+ secToolH:'เครื่องมือเชิงโต้ตอบ 9 ตัว',secToolP:'คำนวณจริงจากตัวเลขของคุณเอง ผลลัพธ์อยู่ในหน้าจอนี้เท่านั้น ไม่ถูกส่งออกไปที่ใด',
+ secQuizH:'แบบทดสอบประมวลความรู้',secQuizP:'ข้อสอบ 22 ข้อ บทละ 2 ข้อ ตอบให้ครบแล้วกดตรวจคำตอบเพื่อดูเฉลยและรายงานรายบท',
+ btnGrade:'ตรวจคำตอบ',btnReset:'เริ่มทำใหม่',toolPrev:'◀ กลับไปบทก่อนหน้า',toolNext:'ไปบทถัดไป ▶',toolPos:(n,t)=>`บทที่ ${n} จาก ${t}`,
+ secRepH:'รายงานผลรายบท',secRepP:'สรุปคะแนน จุดแข็ง และบทที่ควรกลับไปทบทวน',
+ repEmpty:'ยังไม่มีผลสอบ ทำแบบทดสอบให้ครบแล้วกดตรวจคำตอบ',
+ secCertH:'ใบประกาศนียบัตร',secCertP:'ออกให้เมื่อทำแบบทดสอบได้ตั้งแต่ 70% ขึ้นไป',
+ certEmpty:'ใบประกาศจะปรากฏหลังผ่านเกณฑ์ 70%',
+ footer:'Strategic HRM Learning Platform · เนื้อหาเรียบเรียงเพื่อการเรียนรู้และฝึกปฏิบัติภายในองค์กร',
+ chWord:n=>'บทที่ '+n,lecMeta:'4 หัวข้อ · 1 กรณีศึกษา · 2 ข้อสอบ',
+ tabKey:'สาระสำคัญ',tabTool:'เครื่องมือประจำบท',tabCase:'กรณีศึกษา',tabQuiz:'แบบฝึกหัด',
+ situation:'สถานการณ์',approach:'แนวทางวิเคราะห์',
+ toolIntro:'เอกสารและเครื่องมือประกอบบทนี้',linked:'เครื่องมือหลักที่ผูกกับบทนี้',gotoTool:'เปิดเครื่องมือของบทนี้',
+ qNo:n=>'ข้อ '+n+'.',answered:(d,t)=>`ตอบแล้ว ${d} จาก ${t} ข้อ`,remain:n=>`ยังเหลืออีก ${n} ข้อ`,
+ correct:'ถูกต้อง — ',answerIs:'เฉลย: ',
+ repTotal:(o,t)=>`คะแนนรวม ${o} จาก ${t} ข้อ`,repFull:'บทที่ทำได้เต็ม',repWeak:'บทที่ควรทบทวน',
+ repPassLabel:'เกณฑ์ผ่านที่ 70%',pass:'ผ่าน',fail:'ไม่ผ่าน',repByCh:'คะแนนรายบท',repSugg:'ข้อเสนอแนะ',
+ repWeakMsg:l=>`ควรกลับไปทบทวน ${l} โดยเริ่มจากสาระสำคัญแล้วลองทำกรณีศึกษาอีกครั้ง`,
+ repGoodMsg:'ทำได้ดีทุกบท ขั้นต่อไปแนะนำให้นำเครื่องมือไปใส่ตัวเลขจริงขององค์กรตัวเอง',
+ repStrong:l=>`จุดแข็งอยู่ที่ ${l}`,
+ certLow:p=>`คะแนนปัจจุบัน ${p}% ยังไม่ถึง 70% ทบทวนแล้วกดเริ่มทำใหม่`,
+ certName:'ชื่อ-นามสกุลบนใบประกาศ',certPh:'พิมพ์ชื่อของคุณ',certPrint:'พิมพ์หรือบันทึกเป็น PDF',
+ certHead:'ประกาศนียบัตรการอบรม',
+ certBody:(o,t,p)=>`สำเร็จหลักสูตรการบริหารทรัพยากรมนุษย์เชิงกลยุทธ์ จำนวน 11 บท<br>ด้วยคะแนน ${o} จาก ${t} ข้อ คิดเป็น ${p} เปอร์เซ็นต์`,
+ certDate:d=>`วันที่ ${d}`,certRef:c=>`รหัสอ้างอิง ${c}`,
+ noResult:'ไม่พบบทเรียนที่ตรงกับคำค้น',locale:'th-TH'},
+en:{navTool:'Tools',navQuiz:'Quiz',navCert:'Certificate',searchPh:'Search chapters or tools',
+ sideTitle:'Course content',sideSec:'Section 1 · All 11 chapters',
+ crumb:'People Development › Human Resources › Strategic HRM',
+ heroH1:'Strategic Human Resource Management',
+ heroLead:'An 11-chapter self-paced course with 9 practical calculators you can use at work — from workforce planning and job evaluation to salary structures and proving training ROI.',
+ badge:'Bestseller',ratings:'(2,184 ratings) · 9,640 learners',
+ heroMeta:'Last updated 2025 · Thai, English, Chinese · About 6 hours to complete',
+ btnStart:'Start Chapter 1',btnSkip:'Go to calculators',
+ secChH:'Course content',secChP:'11 chapters · each with key concepts, a dedicated tool, a case study and exercises. Click a card to open the chapter.',
+ secToolH:'9 Interactive Tools',secToolP:'Calculate with your own real numbers. Everything stays on this screen and is never sent anywhere.',
+ secQuizH:'Knowledge Check Quiz',secQuizP:'22 questions, two per chapter. Answer them all, then grade to see explanations and a per-chapter report.',
+ btnGrade:'Check answers',btnReset:'Start over',toolPrev:'◀ Back to previous chapter',toolNext:'Next chapter ▶',toolPos:(n,t)=>`Chapter ${n} of ${t}`,
+ secRepH:'Per-chapter report',secRepP:'Score summary, strengths, and chapters worth revisiting.',
+ repEmpty:'No results yet. Complete the quiz and click Check answers.',
+ secCertH:'Certificate',secCertP:'Issued once you score 70% or higher.',
+ certEmpty:'Your certificate will appear once you pass the 70% threshold.',
+ footer:'Strategic HRM Learning Platform · Content compiled for organizational learning and practice.',
+ chWord:n=>'Chapter '+n,lecMeta:'4 topics · 1 case study · 2 questions',
+ tabKey:'Key concepts',tabTool:'Chapter tool',tabCase:'Case study',tabQuiz:'Exercises',
+ situation:'Situation',approach:'Analysis approach',
+ toolIntro:'Materials and tools used with this chapter',linked:'Primary tool linked to this chapter',gotoTool:'Open this chapter tool',
+ qNo:n=>'Q'+n+'.',answered:(d,t)=>`Answered ${d} of ${t} questions`,remain:n=>`${n} question(s) still unanswered`,
+ correct:'Correct — ',answerIs:'Answer: ',
+ repTotal:(o,t)=>`Total score ${o} of ${t}`,repFull:'Chapters scored 100%',repWeak:'Chapters to revisit',
+ repPassLabel:'70% pass threshold',pass:'Pass',fail:'Not yet',repByCh:'Score by chapter',repSugg:'Recommendations',
+ repWeakMsg:l=>`Revisit ${l} — start with the key concepts, then try the case study again.`,
+ repGoodMsg:'Excellent work across every chapter. Next, plug your own organization numbers into the calculators.',
+ repStrong:l=>`Your strongest areas are ${l}`,
+ certLow:p=>`Your current score is ${p}%, below the 70% threshold. Review and click Start over.`,
+ certName:'Name to display on the certificate',certPh:'Type your name',certPrint:'Print or save as PDF',
+ certHead:'Certificate of Completion',
+ certBody:(o,t,p)=>`has successfully completed the 11-chapter Strategic Human Resource Management course<br>with a score of ${o} out of ${t} questions (${p}%)`,
+ certDate:d=>`Date: ${d}`,certRef:c=>`Reference No. ${c}`,
+ noResult:'No chapters match your search',locale:'en-US'},
+zh:{navTool:'工具',navQuiz:'测验',navCert:'证书',searchPh:'搜寻章节或工具',
+ sideTitle:'课程内容',sideSec:'第一部分 · 全部11章',
+ crumb:'人才发展 › 人力资源 › 战略人力资源管理',
+ heroH1:'战略人力资源管理',
+ heroLead:'共11章的自学课程，配备9项可直接用于实务工作的计算工具——涵盖人力规划、职务评价、薪酬结构，以至培训投资报酬率的验证。',
+ badge:'热销课程',ratings:'（2,184则评价）· 9,640位学员',
+ heroMeta:'最后更新于2025年 · 中文、英文、泰文 · 约6小时可完成',
+ btnStart:'开始第1章',btnSkip:'前往计算工具',
+ secChH:'本课程内容',secChP:'共11章 · 每章皆包含核心要点、专属工具、案例研讨与练习题。点击卡片即可开启该章节。',
+ secToolH:'9项互动工具',secToolP:'使用您自己的实际数据进行计算，所有结果仅停留在本页面，不会被传送至任何地方。',
+ secQuizH:'综合知识测验',secQuizP:'共22题，每章2题。全部作答后点击检查答案，即可查看解析与各章节报告。',
+ btnGrade:'检查答案',btnReset:'重新开始',toolPrev:'◀ 返回上一章',toolNext:'前往下一章 ▶',toolPos:(n,t)=>`第 ${n} 章，共 ${t} 章`,
+ secRepH:'各章节报告',secRepP:'总结得分、优势，以及应回头复习的章节。',
+ repEmpty:'尚无测验结果。完成测验并点击检查答案后，报告将显示于此。',
+ secCertH:'结业证书',secCertP:'测验成绩达70%以上即可颁发。',
+ certEmpty:'达到70%及格标准后，证书将显示于此。',
+ footer:'战略人力资源管理学习平台 · 内容专为组织内部学习与实务演练而编写。',
+ chWord:n=>'第'+n+'章',lecMeta:'4个要点 · 1则案例 · 2道题目',
+ tabKey:'核心要点',tabTool:'本章工具',tabCase:'案例研讨',tabQuiz:'练习题',
+ situation:'情境',approach:'分析思路',
+ toolIntro:'本章使用的工具与相关文件',linked:'与本章直接连结的主要工具',gotoTool:'开启本章专属工具',
+ qNo:n=>'第'+n+'题',answered:(d,t)=>`已作答 ${d} 题，共 ${t} 题`,remain:n=>`尚有 ${n} 题未作答`,
+ correct:'回答正确 — ',answerIs:'正确答案：',
+ repTotal:(o,t)=>`总分 ${o} 分，共 ${t} 题`,repFull:'满分章节数',repWeak:'应复习章节数',
+ repPassLabel:'及格标准70%',pass:'已通过',fail:'尚未通过',repByCh:'各章节得分',repSugg:'改进建议',
+ repWeakMsg:l=>`建议回头复习 ${l}，先从核心要点开始，再重新练习该章的案例研讨。`,
+ repGoodMsg:'各章节表现皆十分出色。建议接下来将计算工具套用于贵组织的实际数据。',
+ repStrong:l=>`您的优势章节为 ${l}`,
+ certLow:p=>`目前得分为 ${p}%，尚未达到70%的及格标准。请先复习后再点击重新开始。`,
+ certName:'证书上显示的姓名',certPh:'请输入您的姓名',certPrint:'打印或另存为PDF',
+ certHead:'培训结业证书',
+ certBody:(o,t,p)=>`已完成《战略人力资源管理》课程全部11章内容<br>测验得分 ${o} 题／共 ${t} 题，正确率为 ${p}%`,
+ certDate:d=>`日期：${d}`,certRef:c=>`证书编号 ${c}`,
+ noResult:'找不到符合搜寻条件的章节',locale:'zh-CN'}};
+
+/*══ 2. TOOL STRINGS ══*/
+const TU={
+th:{nav:['KPI Scorecard','วางแผนกำลังคน','ประเมินค่างาน','โครงสร้างเงินเดือน','ช่องว่างสมรรถนะ','ตัวชี้วัด HR','SWOT/TOWS','Funnel สรรหา','Training ROI'],
+ kpi:{t:'KPI Scorecard ถ่วงน้ำหนัก',d:'กรอกตัวชี้วัดพร้อมน้ำหนัก เป้าหมาย และผลจริง น้ำหนักรวมต้องเท่ากับ 100',p:['การเงิน','ลูกค้า','กระบวนการภายใน','การเรียนรู้'],c:['มุมมอง','ตัวชี้วัด','น้ำหนัก %','เป้าหมาย','ผลจริง','สำเร็จ %'],add:'เพิ่มตัวชี้วัด',rows:['ยอดขายรวม (ล้านบาท)','คะแนนความพึงพอใจลูกค้า','ส่งมอบตรงเวลา (%)','พนักงานผ่านการรับรองทักษะ (คน)'],unit:'คะแนน',ov:'ผลประเมินรวม',g:['ต้องปรับปรุง','ตามมาตรฐาน','ดี','ดีเยี่ยม'],warn:w=>`น้ำหนักรวม ${w}% ยังไม่ครบ 100%`,note:'จำกัดผลสำเร็จรายตัวชี้วัดไว้ไม่เกิน 120% เพื่อไม่ให้ตัวเดียวชดเชยตัวอื่นมากเกินไป'},
+ fte:{t:'คำนวณกำลังคนจากปริมาณงาน',d:'Workload Analysis แปลงปริมาณงานทั้งปีเป็นอัตรากำลังที่ต้องการ แล้วเทียบกับกำลังคนปัจจุบัน',f:['ปริมาณงานต่อปี (ครั้ง/ชิ้น/สาย)','เวลามาตรฐานต่อหน่วย (นาที)','วันทำงานต่อปี','ชั่วโมงทำงานต่อวัน','วันลาเฉลี่ยต่อคนต่อปี','อัตราใช้เวลากับงานหลัก (%)','กำลังคนปัจจุบัน (คน)','อัตราลาออกที่คาดการณ์ (%/ปี)'],sub:h=>`ความต้องการกำลังคนจากปริมาณงาน ${h} ชั่วโมงต่อปี`,r:['ชั่วโมงทำงานสุทธิต่อคนต่อปี','กำลังคนปัจจุบัน','คาดว่าจะสูญเสียจากการลาออก','อุปทานภายในที่เหลือ','ช่องว่างที่ต้องสรรหาเพิ่ม'],ppl:'คน',hr:'ชม.',pos:'อัตรา',sur:s=>`ไม่ขาด (เกิน ${s})`,need:n=>`แนะนำเปิดสรรหา ${n} อัตรา`,ok:'กำลังคนเพียงพอ ทบทวนการกระจายงานแทนการรับเพิ่ม'},
+ je:{t:'ประเมินค่างานด้วยระบบคะแนนปัจจัย',d:'ให้ระดับ 1 ถึง 5 ในแต่ละปัจจัย คะแนนรวมสูงสุด 1,000 แล้วเทียบเข้าโครงสร้างระดับตำแหน่ง',pl:'ชื่อตำแหน่งที่ประเมิน',pd:'หัวหน้าแผนกบัญชี',f:['ความรู้และทักษะที่ต้องใช้','ความซับซ้อนในการแก้ปัญหา','ความรับผิดชอบต่อผลลัพธ์','การบริหารและกำกับดูแลคน','การติดต่อประสานงาน','สภาพและความเสี่ยงในการทำงาน'],c:['ปัจจัย','น้ำหนัก %','ระดับ 1-5','คะแนน'],lv:v=>`ระดับ ${v}`,unit:'คะแนน',g:['ปฏิบัติการระดับต้น','ปฏิบัติการ','ปฏิบัติการอาวุโส','หัวหน้างาน','ผู้จัดการแผนก','ผู้จัดการฝ่าย','ผู้บริหารระดับสูง'],res:(n,c,l)=>`ตำแหน่ง <b>${n}</b> จัดอยู่ระดับ <span class="pill g">${c} · ${l}</span>`,note:(a,b)=>`ช่วงคะแนนของระดับนี้คือ ${a}–${b} คะแนน ถ้าใกล้ขอบมาก ควรทบทวน JD ก่อนสรุป`},
+ sal:{t:'สร้างโครงสร้างกระบอกเงินเดือน',d:'กำหนดค่ากลางระดับต่ำสุด ระยะห่างระหว่างระดับ และความกว้างกระบอก ระบบสร้างตารางพร้อมตรวจ Compa-ratio',f:['ค่ากลางระดับ 1 (บาท)','จำนวนระดับ','ระยะห่างค่ากลางระหว่างระดับ (%)','ความกว้างกระบอกระดับล่าง (%)','ความกว้างเพิ่มขึ้นต่อระดับ (%)','เงินเดือนที่ต้องการตรวจ (บาท)','อยู่ระดับที่'],c:['ระดับ','ต่ำสุด','ค่ากลาง','สูงสุด','ความกว้าง'],line:(s,g,m)=>`เงินเดือน ${s} บาท ในระดับ G${g} (ค่ากลาง ${m} บาท)`,lo:'ต่ำกว่าช่วงปกติ ควรตรวจว่าเป็นพนักงานใหม่หรือจ่ายต่ำกว่าตลาด',mid:'อยู่ในช่วงปกติของกระบอก',hi:'สูงกว่าเพดาน เข้าข่าย Red Circle ควรใช้เงินก้อนแทนการขึ้นเข้าฐาน'},
+ cmp:{t:'วิเคราะห์ช่องว่างสมรรถนะ',d:'ระบุระดับที่ตำแหน่งต้องการเทียบกับระดับที่มีจริง พร้อมความสำคัญ ระบบจัดลำดับว่าควรพัฒนาเรื่องใดก่อน',def:['การวางแผนและบริหารโครงการ','การวิเคราะห์ข้อมูลเพื่อการตัดสินใจ','การโค้ชและพัฒนาผู้ใต้บังคับบัญชา','การสื่อสารและนำเสนอ'],c:['สมรรถนะ','ต้องการ','มีจริง','ความสำคัญ','Gap','ลำดับ'],add:'เพิ่มสมรรถนะ',imp:[[1,'ต่ำ'],[2,'ปานกลาง'],[3,'สูง']],urg:n=>`${n} เรื่องเร่งด่วน`,urgNote:'นับจากสมรรถนะที่มีช่องว่างตั้งแต่ 2 ระดับขึ้นไป',c2:['ลำดับพัฒนา','Gap','แนวทางตาม 70:20:10'],pl:['มอบหมายงานท้าทายพร้อมพี่เลี้ยง และหลักสูตรเข้มข้น','อบรมเฉพาะทางร่วมกับการโค้ชรายเดือน','เรียนรู้จากงานประจำและทบทวนกับหัวหน้า','รักษาระดับและให้เป็นผู้ถ่ายทอดให้ผู้อื่น']},
+ met:{t:'ตัวชี้วัด HR และผลกระทบทางการเงิน',d:'แปลงตัวเลขกำลังคนเป็นภาษาที่ผู้บริหารใช้ตัดสินใจ โดยเฉพาะต้นทุนการลาออก',f:['จำนวนพนักงานเฉลี่ยทั้งปี (คน)','จำนวนผู้ลาออกทั้งปี (คน)','รายได้รวมทั้งปี (บาท)','ต้นทุนบุคลากรรวมทั้งปี (บาท)','ต้นทุนทดแทนต่อคน (บาท)','ตำแหน่งที่เติมจากภายใน (%)'],sub:'อัตราการลาออกทั้งปี',r:['ต้นทุนการลาออกทั้งปี','คิดเป็นสัดส่วนของรายได้','รายได้ต่อพนักงานหนึ่งคน','ผลตอบแทนต่อทุนมนุษย์ (HC ROI)','อัตราเติมตำแหน่งจากภายใน'],hi:'สูงผิดปกติ ควรทำ Exit Analysis เร่งด่วน',md:'เริ่มสูง ควรเจาะดูเป็นรายฝ่ายและอายุงาน',ok:'อยู่ในเกณฑ์ที่บริหารได้',note:v=>`ถ้าลดอัตราลาออกลง 5 จุด จะประหยัดได้ประมาณ ${v} บาทต่อปี ใช้เป็นฐานขออนุมัติโครงการรักษาพนักงาน`},
+ swot:{t:'SWOT และ TOWS Strategy Builder',d:'กรอกปัจจัยภายในและภายนอกได้หมวดละสูงสุด 5 รายการ ระบบจะจับคู่เป็นกลยุทธ์สี่กลุ่มให้อัตโนมัติ พร้อมตรวจว่าเขียนผิดประเภทหรือไม่',f:['จุดแข็ง (ภายใน)','จุดอ่อน (ภายใน)','โอกาส (ภายนอก)','อุปสรรค (ภายนอก)'],ph:['เช่น ทีมช่างเทคนิคมีประสบการณ์เฉลี่ย 12 ปี','เช่น อัตราลาออกพนักงานใหม่ปีแรก 45%','เช่น แรงงานในพื้นที่ยังไม่ถูกคู่แข่งดึงไป','เช่น คู่แข่งจากส่วนกลางเข้ามาเปิดสาขา'],so:'SO · กลยุทธ์เชิงรุก',st:'ST · กลยุทธ์ป้องกัน',wo:'WO · กลยุทธ์แก้ไข',wt:'WT · กลยุทธ์ตั้งรับ',soD:(s,o)=>`ใช้จุดแข็ง "${s}" เพื่อคว้าโอกาส "${o}" ให้เร็วกว่าคู่แข่ง`,stD:(s,t)=>`ใช้จุดแข็ง "${s}" เป็นเกราะรับมืออุปสรรค "${t}"`,woD:(w,o)=>`เร่งปิดจุดอ่อน "${w}" เพื่อไม่ให้พลาดโอกาส "${o}"`,wtD:(w,t)=>`ลดความเสี่ยงจากจุดอ่อน "${w}" ที่จะถูกซ้ำเติมด้วย "${t}"`,warnIn:'⚠ จุดแข็งและจุดอ่อนต้องเป็นปัจจัยภายในที่องค์กรควบคุมได้ ลองตรวจอีกครั้งว่าไม่ได้เขียนเรื่องตลาดหรือคู่แข่งลงในช่องนี้',empty:'กรอกให้ครบทั้งสี่ช่องเพื่อสร้างกลยุทธ์'},
+ fun:{t:'Recruitment Funnel Analyzer',d:'กรอกจำนวนผู้สมัครแต่ละขั้น ระบบคำนวณอัตราผ่านและชี้ว่าคอขวดอยู่ตรงไหน',f:['ผู้สมัครทั้งหมด (คน)','ผ่านคัดกรองใบสมัคร (คน)','เข้าสัมภาษณ์ (คน)','ได้รับข้อเสนอ (คน)','ตอบรับเข้าทำงาน (คน)'],c:['ขั้นตอน','จำนวน','อัตราผ่านจากขั้นก่อน'],stage:['ผู้สมัคร','ผ่านคัดกรอง','เข้าสัมภาษณ์','ได้รับข้อเสนอ','ตอบรับงาน'],overall:'อัตราแปลงรวมจากผู้สมัครถึงรับเข้าทำงาน',bn:'คอขวดอยู่ที่',diag:{scr:'ขั้นคัดกรอง — ผู้สมัครไม่ตรงคุณสมบัติ ให้ทบทวนช่องทางประกาศและข้อความในประกาศรับสมัคร',int:'ขั้นสัมภาษณ์ — เกณฑ์คัดกรองอาจหลวมเกินไป ควรใช้แบบประเมินเชิงโครงสร้างตั้งแต่รอบแรก',off:'ขั้นให้ข้อเสนอ — ผู้สมัครผ่านสัมภาษณ์น้อย ควรทบทวนมาตรฐานการสัมภาษณ์และ competency ที่ใช้',acc:'ขั้นตอบรับข้อเสนอ — คนอยากได้แต่เขาปฏิเสธ แปลว่าค่าตอบแทนหรือ EVP ไม่แข่งขัน ให้ทำ Salary Benchmark ก่อนทุ่มงบโฆษณา'}},
+ roi:{t:'Training ROI Calculator',d:'วัดผลตอบแทนการฝึกอบรมระดับที่ 4 ของ Kirkpatrick โดยแปลงผลลัพธ์เชิงปฏิบัติการเป็นตัวเงิน แล้วเทียบกับต้นทุนรวมทั้งทางตรงและทางอ้อม',secB:'ผลประโยชน์ที่วัดเป็นเงินได้',secC:'ต้นทุนการฝึกอบรม',b:['จำนวนผู้เข้าอบรม (คน)','มูลค่าผลลัพธ์ที่ดีขึ้นต่อคนต่อปี (บาท)','สัดส่วนที่เชื่อว่าเกิดจากการอบรมจริง (%)','ระดับความมั่นใจในการประมาณการ (%)'],c:['ค่าวิทยากรและหลักสูตร (บาท)','ค่าสถานที่ อาหาร เอกสาร (บาท)','ค่าเดินทางและที่พัก (บาท)','ค่าแรงผู้เข้าอบรมระหว่างอบรม (บาท)','ค่าบริหารจัดการของฝ่าย HR (บาท)'],r:['ผลประโยชน์รวมก่อนปรับค่า','ผลประโยชน์สุทธิหลังปรับ Isolation และ Confidence','ต้นทุนรวมทั้งหมด','กำไรสุทธิจากการอบรม','Benefit-Cost Ratio (BCR)','ระยะเวลาคืนทุน'],month:'เดือน',never:'ยังไม่คืนทุน',lbl:'ผลตอบแทนการลงทุนด้านการฝึกอบรม',hi:'คุ้มค่ามาก ควรขยายผลไปกลุ่มอื่น',md:'คุ้มทุน อยู่ในเกณฑ์ที่ยอมรับได้',lo:'ยังไม่คุ้มทุน ควรทบทวนเนื้อหาหลักสูตรหรือวิธีติดตามผลหลังอบรม',note:'สูตร ROI = (ผลประโยชน์สุทธิ − ต้นทุนรวม) ÷ ต้นทุนรวม × 100 ตัวคูณ Isolation ใช้ตัดผลที่เกิดจากปัจจัยอื่น เช่น ระบบใหม่หรือฤดูกาล ส่วน Confidence คือความมั่นใจของผู้ประมาณการ ทั้งสองตัวช่วยให้ตัวเลขน่าเชื่อถือต่อผู้บริหารการเงิน'}},
+en:{nav:['KPI Scorecard','Workforce Planning','Job Evaluation','Salary Structure','Competency Gap','HR Metrics','SWOT/TOWS','Recruitment Funnel','Training ROI'],
+ kpi:{t:'Weighted KPI Scorecard',d:'Enter each indicator with weight, target and actual. All weights must sum to 100.',p:['Financial','Customer','Internal Process','Learning & Growth'],c:['Perspective','Indicator','Weight %','Target','Actual','Achieved %'],add:'Add indicator',rows:['Total sales (million)','Customer satisfaction score','On-time delivery (%)','Employees certified in new skills'],unit:'pts',ov:'Overall rating',g:['Needs improvement','On standard','Good','Excellent'],warn:w=>`Total weight is ${w}%, not yet 100%`,note:'Each indicator achievement is capped at 120% so no single indicator excessively offsets the others.'},
+ fte:{t:'Calculate headcount from workload',d:'Workload Analysis converts annual work volume into required headcount, then compares with current headcount.',f:['Annual volume (transactions/units/calls)','Standard time per unit (minutes)','Working days per year','Working hours per day','Average leave days per person per year','Utilization on core work (%)','Current headcount','Forecast attrition rate (%/year)'],sub:h=>`Headcount required based on ${h} hours of annual workload`,r:['Net working hours per person per year','Current headcount','Expected loss from attrition','Remaining internal supply','Gap to be recruited'],ppl:'people',hr:'hrs',pos:'positions',sur:s=>`No shortage (${s} surplus)`,need:n=>`Recommend opening ${n} position(s)`,ok:'Headcount is sufficient — review work distribution instead of hiring'},
+ je:{t:'Evaluate job worth with point-factor',d:'Rate each factor from 1 to 5. The maximum total is 1,000 points, matched to the grade structure.',pl:'Position being evaluated',pd:'Accounting Department Head',f:['Knowledge and skill required','Problem-solving complexity','Accountability for results','People management and supervision','Coordination and communication','Working conditions and risk'],c:['Factor','Weight %','Level 1-5','Score'],lv:v=>`Level ${v}`,unit:'pts',g:['Junior operational','Operational','Senior operational','Supervisor','Department manager','Division manager','Senior executive'],res:(n,c,l)=>`Position <b>${n}</b> is graded <span class="pill g">${c} · ${l}</span>`,note:(a,b)=>`This grade range is ${a}–${b} points. If close to either edge, review the job description first.`},
+ sal:{t:'Build a salary range structure',d:'Set the lowest midpoint, progression and range spread. The system generates the table and checks Compa-ratio.',f:['Grade 1 midpoint','Number of grades','Midpoint progression between grades (%)','Range spread at lowest grade (%)','Spread increase per grade (%)','Salary to check','At grade'],c:['Grade','Min','Midpoint','Max','Spread'],line:(s,g,m)=>`Salary ${s} at grade G${g} (midpoint ${m})`,lo:'Below the normal range — check if new hire or below-market pay',mid:'Within the normal range of the band',hi:'Above the ceiling — a Red Circle case; use a lump sum instead of a base increase'},
+ cmp:{t:'Analyze the competency gap',d:'Enter required versus actual level plus importance. The system ranks what to develop first.',def:['Planning and project management','Data analysis for decision-making','Coaching and developing subordinates','Communication and presentation'],c:['Competency','Required','Actual','Importance','Gap','Priority'],add:'Add competency',imp:[[1,'Low'],[2,'Medium'],[3,'High']],urg:n=>`${n} urgent item(s)`,urgNote:'Counting competencies with a gap of 2 levels or more',c2:['Development priority','Gap','70:20:10 approach'],pl:['Assign challenging work with a mentor, plus intensive training','Specialized training combined with monthly coaching','Learn on the job and review with the supervisor','Maintain the level and let them mentor others']},
+ met:{t:'HR metrics and financial impact',d:'Translate workforce numbers into the language executives use, especially turnover cost.',f:['Average headcount for the year','Total separations for the year','Total annual revenue','Total annual personnel cost','Replacement cost per person','Positions filled internally (%)'],sub:'Annual turnover rate',r:['Total annual turnover cost','As a share of revenue','Revenue per employee','Return on Human Capital (HC ROI)','Internal fill rate'],hi:'Abnormally high — an urgent exit analysis is needed',md:'Getting high — examine by department and tenure',ok:'Within a manageable range',note:v=>`Cutting turnover by 5 points would save roughly ${v} per year — use this to justify a retention program.`},
+ swot:{t:'SWOT and TOWS strategy builder',d:'Enter up to 5 items for each internal and external factor. The system automatically pairs them into four strategy groups.',f:['Strength (internal)','Weakness (internal)','Opportunity (external)','Threat (external)'],ph:['e.g. technicians average 12 years experience','e.g. first-year new-hire turnover is 45%','e.g. local talent not yet poached by competitors','e.g. a national competitor opening nearby'],so:'SO · Offensive strategy',st:'ST · Defensive strategy',wo:'WO · Corrective strategy',wt:'WT · Survival strategy',soD:(s,o)=>`Use the strength "${s}" to capture the opportunity "${o}" faster than competitors`,stD:(s,t)=>`Use the strength "${s}" as a shield against the threat "${t}"`,woD:(w,o)=>`Urgently close the weakness "${w}" so the opportunity "${o}" is not missed`,wtD:(w,t)=>`Reduce the risk of the weakness "${w}" being worsened by "${t}"`,warnIn:'⚠ Strengths and weaknesses must be internal factors you control. Check that you have not written market or competitor issues here.',empty:'Fill in all four fields to generate strategies'},
+ fun:{t:'Recruitment funnel analyzer',d:'Enter candidate counts at each stage. The system calculates pass rates and identifies the bottleneck.',f:['Total applicants','Passed resume screening','Attended interview','Received an offer','Accepted the offer'],c:['Stage','Count','Pass rate from previous stage'],stage:['Applicants','Screened','Interviewed','Offered','Accepted'],overall:'Overall conversion from applicant to hire',bn:'Bottleneck at',diag:{scr:'Screening stage — applicants do not match requirements. Review sourcing channels and job ad wording.',int:'Interview stage — screening criteria may be too loose. Use a structured assessment from the first round.',off:'Offer stage — few candidates pass interviews. Review interview standards and the competencies used.',acc:'Offer acceptance — you want them but they decline. Pay or EVP is not competitive. Run a salary benchmark before spending more on advertising.'}},
+ roi:{t:'Training ROI calculator',d:'Measure training return at Kirkpatrick Level 4 by converting operational results into money, then comparing against total direct and indirect costs.',secB:'Monetized benefits',secC:'Training costs',b:['Number of participants','Improved result value per person per year','Isolation factor — share truly caused by training (%)','Confidence level in the estimate (%)'],c:['Trainer and course fees','Venue, catering and materials','Travel and accommodation','Participant wages during training','HR administration cost'],r:['Gross benefit before adjustment','Net benefit after isolation and confidence','Total cost','Net gain from training','Benefit-Cost Ratio (BCR)','Payback period'],month:'months',never:'No payback yet',lbl:'Return on training investment',hi:'Highly worthwhile — consider scaling to other groups',md:'Worthwhile, within an acceptable range',lo:'Not yet worthwhile — review course content or post-training follow-up',note:'ROI = (Net benefit − Total cost) ÷ Total cost × 100. The isolation factor strips out results caused by other factors such as new systems or seasonality; confidence reflects estimator certainty. Both make the figure credible to finance executives.'}},
+zh:{nav:['KPI计分卡','人力规划','职务评价','薪酬结构','胜任力落差','人力资源指标','SWOT/TOWS','招募漏斗','培训投资报酬率'],
+ kpi:{t:'加权KPI计分卡',d:'输入各项指标的权重、目标值与实际结果，所有权重加总必须等于100。',p:['财务','顾客','内部流程','学习与成长'],c:['构面','指标','权重%','目标值','实际值','达成率%'],add:'新增指标',rows:['总销售额（百万）','顾客满意度分数','准时交货率（%）','完成新技能认证的员工人数'],unit:'分',ov:'整体评级',g:['待改善','达标','良好','优异'],warn:w=>`权重总和为 ${w}%，尚未达到100%`,note:'单一指标的达成率上限设为120%，以避免单一指标过度弥补其他指标的落差。'},
+ fte:{t:'依工作量计算所需人力',d:'工作量分析法将全年工作量换算为所需人力编制，再与现有人力比较。',f:['年度工作量（笔数/件数/通数）','每单位标准工时（分钟）','每年工作天数','每日工作时数','每人每年平均请假天数','核心工作稼动率（%）','现有人力（人）','预估离职率（%/年）'],sub:h=>`依据每年 ${h} 小时的工作量所需之人力`,r:['每人每年净工作时数','现有人力','预估因离职流失人数','剩余内部供给','需额外招募的人力缺口'],ppl:'人',hr:'小时',pos:'个职位',sur:s=>`人力充足（多出 ${s}）`,need:n=>`建议开缺招募 ${n} 个职位`,ok:'人力已足够，应先检讨工作分配，而非增聘人力'},
+ je:{t:'以点数因素法评估职务价值',d:'针对各项因素给予1至5级评分，总分上限1,000分，再据此对照职等结构。',pl:'受评职位名称',pd:'会计部门主管',f:['所需知识与技能','解决问题的复杂度','对成果的责任程度','人员管理与督导','协调与沟通','工作环境与风险'],c:['因素','权重%','等级1-5','分数'],lv:v=>`第${v}级`,unit:'分',g:['初级作业','作业级','资深作业级','主管级','部门经理','处级经理','高阶主管'],res:(n,c,l)=>`职位 <b>${n}</b> 归属职等为 <span class="pill g">${c} · ${l}</span>`,note:(a,b)=>`该职等的分数区间为 ${a} 至 ${b} 分。若非常接近上下限，应先重新检视职位说明书。`},
+ sal:{t:'建立薪资结构',d:'设定最低职等中位数、职等级距与薪幅宽度，系统将生成薪资表并检查薪酬比率。',f:['第1职等中位数','职等数量','职等间中位数级距（%）','最低职等薪幅宽度（%）','每职等递增之薪幅宽度（%）','欲检核的薪资','所属职等'],c:['职等','最低值','中位数','最高值','宽度'],line:(s,g,m)=>`薪资 ${s} 位于 G${g} 职等（中位数 ${m}）`,lo:'低于正常区间，应检查是否为新进员工或薪资低于市场水平',mid:'位于薪幅的正常区间内',hi:'高于上限，属于红圈情形，应以一次性奖金取代调升底薪'},
+ cmp:{t:'胜任力落差分析',d:'输入职位所需等级与实际等级，并标示重要性，系统将排列应优先发展的顺序。',def:['规划与专案管理','数据分析与决策','指导与培育下属','沟通与简报表达'],c:['胜任力','所需等级','实际等级','重要性','落差','优先顺序'],add:'新增胜任力',imp:[[1,'低'],[2,'中'],[3,'高']],urg:n=>`${n} 项紧急事项`,urgNote:'统计落差达2级以上的胜任力项目',c2:['发展优先项目','落差','70:20:10发展建议'],pl:['安排具挑战性的任务并配置导师，同时提供密集课程培训','专项培训并搭配每月教练辅导','在日常工作中学习，并定期与主管复盘检讨','维持现有水平，并让其担任传承者指导他人']},
+ met:{t:'人力资源指标与财务影响',d:'将人力数据转化为管理层决策所需的语言，尤其是离职成本。',f:['全年平均员工人数','全年离职人数','全年总营收','全年人事总成本','每人替代成本','内部递补职位比例（%）'],sub:'全年离职率',r:['全年离职总成本','占营收比例','每位员工创造的营收','人力资本投资报酬率（HC ROI）','内部职位递补率'],hi:'异常偏高，应尽快进行离职原因分析',md:'开始偏高，应依部门与年资进一步分析',ok:'处于可管理的范围内',note:v=>`若能将离职率降低5个百分点，每年约可节省 ${v}，可作为申请留才专案预算的依据。`},
+ swot:{t:'SWOT与TOWS战略产生器',d:'每个内外部因素最多可输入5项，系统将自动配对成四类战略，并检查是否填错类别。',f:['优势（内部）','劣势（内部）','机会（外部）','威胁（外部）'],ph:['例如：技术团队平均年资达12年','例如：新进员工第一年离职率45%','例如：当地人才尚未被竞争对手挖角','例如：全国性竞争对手前来开设门市'],so:'SO · 进攻型战略',st:'ST · 防御型战略',wo:'WO · 改善型战略',wt:'WT · 保守型战略',soD:(s,o)=>`运用优势「${s}」，比竞争对手更快掌握机会「${o}」`,stD:(s,t)=>`以优势「${s}」作为屏障，抵御威胁「${t}」`,woD:(w,o)=>`尽速弥补劣势「${w}」，以免错失机会「${o}」`,wtD:(w,t)=>`降低劣势「${w}」遭「${t}」进一步恶化的风险`,warnIn:'⚠ 优势与劣势必须是组织可以控制的内部因素，请检查是否误将市场或竞争对手的问题填入此处。',empty:'请填满四个栏位以产生战略'},
+ fun:{t:'招募漏斗分析工具',d:'输入各阶段的人数，系统将计算通过率并指出瓶颈所在。',f:['应征者总数','通过履历筛选','参加面试','获得录用通知','接受录用'],c:['阶段','人数','相较前一阶段的通过率'],stage:['应征者','通过筛选','参加面试','获得录用','接受录用'],overall:'从应征到录取的整体转换率',bn:'瓶颈位于',diag:{scr:'筛选阶段——应征者条件不符，应检讨招募渠道与职缺公告的文案内容。',int:'面试阶段——筛选标准可能过于宽松，应自第一轮起即采用结构化评估表。',off:'录用阶段——通过面试的人数偏少，应检讨面试标准与所采用的胜任力项目。',acc:'录用接受阶段——想录取的人却拒绝了，代表薪酬或员工价值主张缺乏竞争力，应先进行薪资基准比较。'}},
+ roi:{t:'培训投资报酬率计算工具',d:'依柯克派翠克第四层次衡量培训成效，将营运成果转化为金额，再与直接及间接总成本相互比较。',secB:'可量化为金额的效益',secC:'培训总成本',b:['参训人数','每人每年成果提升的金额','隔离系数——真正源自培训的比例（%）','估算的信心水准（%）'],c:['讲师与课程费用','场地、餐饮与教材费','交通与住宿费','参训期间的员工薪资成本','人资部门行政管理成本'],r:['调整前的总效益','经隔离系数与信心水准调整后的净效益','总成本','培训净获利','效益成本比（BCR）','投资回收期'],month:'个月',never:'尚未回收成本',lbl:'培训投资报酬率',hi:'效益极佳，建议扩大推行至其他族群',md:'具投资效益，处于可接受范围内',lo:'尚未达到损益平衡，应检讨课程内容或培训后的追踪方式',note:'计算公式为：ROI =（净效益 − 总成本）÷ 总成本 × 100。隔离系数用以扣除由新系统或季节性等其他因素所造成的成果；信心水准则反映估算者的把握程度。'}}};
+
+/*══ 3. CHAPTER DATA ══*/
+const CH=[
+{id:1,ic:'🧭',tool:'met',hue:'#5b2a86',i18n:{
+ th:{t:'จาก HRM สู่ SHRM',en:'From Personnel to Strategic HRM',sum:'เข้าใจพัฒนาการของงานบุคคล จากงานธุรการสู่การเป็นหุ้นส่วนเชิงกลยุทธ์ และบทบาทสี่ด้านของ HR ยุคใหม่',tags:['Ulrich Model','HR Value Chain'],
+  keys:[{h:'สามยุคของงานบุคคล',d:'Personnel Administration เน้นเอกสารและกฎระเบียบ → HRM เน้นระบบและกระบวนการ → SHRM เน้นการเชื่อมคนเข้ากับผลลัพธ์ทางธุรกิจ'},{h:'บทบาทสี่ด้านของ Ulrich',d:'Strategic Partner แปลกลยุทธ์ธุรกิจเป็นกลยุทธ์คน, Change Agent นำการเปลี่ยนแปลง, Administrative Expert ทำระบบให้มีประสิทธิภาพ, Employee Champion ดูแลความผูกพันของพนักงาน'},{h:'Vertical vs Horizontal Fit',d:'Vertical Fit คือกลยุทธ์ HR สอดคล้องกับกลยุทธ์ธุรกิจ ส่วน Horizontal Fit คือระบบย่อยของ HR สอดคล้องกันเอง เช่น Competency ที่ใช้สรรหาต้องเป็นตัวเดียวกับที่ใช้ประเมินผลและพัฒนา'},{h:'HR Value Chain',d:'HR Activities → HRM Outcomes (Engagement, Retention, Competency) → Organizational Performance ห่วงโซ่นี้คือเหตุผลที่ HR ต้องวัดผลถึงระดับธุรกิจ ไม่หยุดที่จำนวนชั่วโมงอบรม'}],
+  tools:['HR Maturity Assessment','HR Value Chain Mapping','Stakeholder Analysis'],
+  cs:{s:'บริษัทผลิตชิ้นส่วนแห่งหนึ่งมีฝ่ายบุคคล 6 คน ทำงานเอกสาร เงินเดือน และสรรหาเป็นหลัก ผู้บริหารบ่นว่า HR ไม่เคยเสนออะไรที่ช่วยธุรกิจได้เลย',a:'เริ่มจากทำ HR Value Chain ให้เห็นว่าอัตราลาออกของพนักงานฝ่ายผลิตปีละ 38% ทำให้ต้นทุนการผลิตต่อชิ้นสูงขึ้นเท่าไร แปลงปัญหาคนเป็นภาษาเงิน แล้วจึงเสนอโครงการลด Turnover พร้อมตัวเลขผลตอบแทน จากนั้นค่อยขยับบทบาทไปสู่ Strategic Partner'},
+  q:[{q:'ข้อใดอธิบาย Vertical Fit ได้ถูกต้องที่สุด',o:['ระบบสรรหาและระบบประเมินผลใช้ competency ชุดเดียวกัน','กลยุทธ์ด้านคนสอดคล้องกับทิศทางและกลยุทธ์ธุรกิจ','ทุกฝ่ายมีโครงสร้างเงินเดือนเท่ากัน','HR รายงานตรงต่อ CEO'],a:1,e:'Vertical Fit คือความสอดคล้องระหว่างกลยุทธ์ HR กับกลยุทธ์ธุรกิจ ส่วนตัวเลือกแรกคือ Horizontal Fit'},{q:'บทบาทใดของ Ulrich ที่เน้นการเพิ่มประสิทธิภาพของกระบวนการงานบุคคลให้ถูกและเร็วขึ้น',o:['Strategic Partner','Change Agent','Administrative Expert','Employee Champion'],a:2,e:'Administrative Expert มุ่งลดต้นทุนและรอบเวลาของกระบวนการ HR'}]},
+ en:{t:'From Personnel to Strategic HRM',en:'',sum:'Understand how personnel work evolved from clerical administration into a strategic business partner, and the four modern roles of HR.',tags:['Ulrich Model','HR Value Chain'],
+  keys:[{h:'Three eras of personnel work',d:'Personnel Administration focused on paperwork and rules → HRM focused on systems and processes → SHRM focuses on linking people to business results.'},{h:'Ulrich four roles',d:'Strategic Partner translates business strategy into people strategy; Change Agent drives transformation; Administrative Expert builds efficient systems; Employee Champion cares for engagement.'},{h:'Vertical vs horizontal fit',d:'Vertical Fit means HR strategy aligns with business strategy. Horizontal Fit means HR sub-systems align with each other — the competencies used for hiring must also be used for appraisal and development.'},{h:'HR value chain',d:'HR Activities → HRM Outcomes (engagement, retention, competency) → Organizational Performance. This is why HR must measure impact at the business level, not just training hours.'}],
+  tools:['HR Maturity Assessment','HR Value Chain Mapping','Stakeholder Analysis'],
+  cs:{s:'A parts manufacturer has a six-person HR team focused mainly on paperwork, payroll and recruitment. Management complains that HR never proposes anything that helps the business.',a:'Start by building an HR Value Chain to show that 38% annual turnover in production raises the cost per unit produced. Translate the people problem into money, then propose a turnover-reduction project with a clear return, before gradually moving toward the Strategic Partner role.'},
+  q:[{q:'Which statement best describes Vertical Fit?',o:['The recruitment and appraisal systems use the same competency set','People strategy aligns with the organization direction and business strategy','Every department has the same salary structure','HR reports directly to the CEO'],a:1,e:'Vertical Fit is the alignment between HR strategy and business strategy; the first option describes Horizontal Fit.'},{q:'Which Ulrich role focuses on making HR processes cheaper and faster?',o:['Strategic Partner','Change Agent','Administrative Expert','Employee Champion'],a:2,e:'The Administrative Expert role focuses on reducing the cost and cycle time of HR processes.'}]},
+ zh:{t:'从人事管理迈向战略人力资源管理',en:'',sum:'了解人事工作如何从行政事务发展为战略业务伙伴，以及现代人力资源的四大角色。',tags:['Ulrich Model','HR Value Chain'],
+  keys:[{h:'人事工作的三个阶段',d:'人事行政阶段注重文书与规章 → 人力资源管理阶段注重制度与流程 → 战略人力资源管理阶段则着重将人才与业务成果相连结。'},{h:'尤里奇的四大角色',d:'战略伙伴将企业战略转化为人才战略；变革推动者引领组织变革；行政专家建立高效率制度；员工支持者关注员工敬业度。'},{h:'纵向契合与横向契合',d:'纵向契合指人力资源战略与企业战略保持一致；横向契合则指各子系统彼此一致，例如招聘所用的胜任力，必须与绩效考核及培育发展完全相同。'},{h:'人力资源价值链',d:'人力资源活动 → 人力资源成果（敬业度、留任率、胜任力）→ 组织绩效。这正是人力资源必须衡量到业务层面影响，而非止步于培训时数的原因。'}],
+  tools:['HR Maturity Assessment','HR Value Chain Mapping','Stakeholder Analysis'],
+  cs:{s:'某零部件制造公司的人力资源部门共有六名员工，主要负责文书、薪资与招聘。管理层抱怨人力资源部从未提出任何真正有助于业务的建议。',a:'首先建立人力资源价值链，说明生产部门每年38%的离职率究竟使单位生产成本上升多少，将人的问题转化为财务语言，接着提出附带明确投资回报的降低离职率方案，之后再逐步转型为战略伙伴角色。'},
+  q:[{q:'以下哪一项最能正确说明「纵向契合」？',o:['招聘制度与绩效考核制度使用相同的胜任力标准','人才战略与组织方向及企业战略保持一致','所有部门的薪资结构完全相同','人力资源部门直接向CEO汇报'],a:1,e:'纵向契合指人力资源战略与企业战略之间的一致性；第一个选项描述的其实是横向契合。'},{q:'尤里奇的哪一个角色着重于使人力资源流程更具成本效益且更快速？',o:['战略伙伴','变革推动者','行政专家','员工支持者'],a:2,e:'行政专家角色着重于降低人力资源流程的成本与周期时间。'}]}}},
+{id:2,ic:'🔭',tool:'swot',hue:'#1b4965',i18n:{
+ th:{t:'การวิเคราะห์สภาพแวดล้อมเชิงกลยุทธ์',en:'Strategic Environment Analysis',sum:'อ่านบริบทภายนอกและภายในด้วย PESTEL, Five Forces, SWOT และแปลงเป็นทางเลือกเชิงกลยุทธ์ด้วย TOWS Matrix',tags:['PESTEL','SWOT/TOWS','VRIO'],
+  keys:[{h:'PESTEL',d:'มองปัจจัยมหภาคหกด้าน การเมือง เศรษฐกิจ สังคม เทคโนโลยี สิ่งแวดล้อม และกฎหมาย สำหรับงาน HR ปัจจัยที่กระทบมากที่สุดมักเป็นโครงสร้างประชากร กฎหมายแรงงาน และเทคโนโลยีที่เปลี่ยนลักษณะงาน'},{h:'SWOT ที่ใช้ได้จริง',d:'จุดแข็งและจุดอ่อนต้องเป็นเรื่องภายในที่ควบคุมได้ โอกาสและอุปสรรคต้องเป็นเรื่องภายนอก ข้อผิดพลาดที่พบบ่อยคือเขียนจุดอ่อนเป็นปัจจัยภายนอก ทำให้หาทางแก้ไม่ได้'},{h:'TOWS Matrix',d:'จับคู่เพื่อสร้างกลยุทธ์สี่กลุ่ม SO ใช้จุดแข็งคว้าโอกาส, ST ใช้จุดแข็งลดอุปสรรค, WO แก้จุดอ่อนเพื่อรับโอกาส, WT ตั้งรับลดความเสี่ยง'},{h:'VRIO กับทุนมนุษย์',d:'ทรัพยากรที่สร้างความได้เปรียบยั่งยืนต้องมีคุณค่า หายาก ลอกเลียนยาก และองค์กรใช้ประโยชน์ได้ ความรู้ฝังลึกในทีมงานเข้าเกณฑ์นี้ ขณะที่ซอฟต์แวร์ที่ใครก็ซื้อได้ไม่เข้าเกณฑ์'}],
+  tools:['PESTEL Canvas','SWOT/TOWS Builder','VRIO Checklist'],
+  cs:{s:'ธุรกิจค้าปลีกภูมิภาคกำลังขยายสาขา แต่หาผู้จัดการสาขาไม่ทัน ขณะที่คู่แข่งจากส่วนกลางเข้ามาเปิดในพื้นที่เดียวกัน',a:'จุดแข็งคือความเข้าใจตลาดท้องถิ่นและเครือข่ายพนักงานเดิม โอกาสคือแรงงานในพื้นที่ที่ยังไม่ถูกดึงไป กลยุทธ์ SO คือสร้าง Store Manager Academy ปั้นหัวหน้าแผนกเดิมขึ้นเป็นผู้จัดการภายใน 9 เดือน แทนการแย่งคนจากคู่แข่งด้วยเงินเดือน'},
+  q:[{q:'ข้อใดจัดเป็น Weakness ตามหลัก SWOT ที่ถูกต้อง',o:['ค่าแรงขั้นต่ำปรับขึ้น','คู่แข่งรายใหญ่เข้ามาในพื้นที่','อัตราลาออกของพนักงานใหม่ในปีแรกสูงถึง 45%','กำลังซื้อผู้บริโภคชะลอตัว'],a:2,e:'Weakness ต้องเป็นปัจจัยภายในที่องค์กรควบคุมหรือแก้ไขได้ อีกสามข้อเป็นปัจจัยภายนอก'},{q:'กลยุทธ์กลุ่ม WO ใน TOWS Matrix หมายถึงอะไร',o:['ใช้จุดแข็งคว้าโอกาส','แก้จุดอ่อนเพื่อให้คว้าโอกาสได้','ใช้จุดแข็งรับมืออุปสรรค','ลดความเสียหายจากจุดอ่อนและอุปสรรคพร้อมกัน'],a:1,e:'WO คือ Weakness-Opportunity ปิดจุดอ่อนเพื่อไม่ให้พลาดโอกาสที่เปิดอยู่'}]},
+ en:{t:'Strategic Environment Analysis',en:'',sum:'Read the external and internal context using PESTEL, Five Forces and SWOT, then convert insights into strategic options with the TOWS Matrix.',tags:['PESTEL','SWOT/TOWS','VRIO'],
+  keys:[{h:'PESTEL',d:'Scan six macro factors — political, economic, social, technological, environmental and legal. For HR, the biggest impacts are usually demographic shifts, labor law, and technology reshaping job content.'},{h:'A usable SWOT',d:'Strengths and weaknesses must be internal, controllable factors; opportunities and threats must be external. The most common mistake is writing a weakness as an external factor, which makes it impossible to fix.'},{h:'TOWS matrix',d:'Pair factors into four strategy groups: SO uses strengths to capture opportunities, ST uses strengths to counter threats, WO fixes weaknesses to capture opportunities, WT defends against weakness and threat together.'},{h:'VRIO and human capital',d:'A resource creating sustainable advantage must be Valuable, Rare, hard to Imitate, and the Organization must exploit it. Embedded team knowledge qualifies; software anyone can buy does not.'}],
+  tools:['PESTEL Canvas','SWOT/TOWS Builder','VRIO Checklist'],
+  cs:{s:'A regional retailer is expanding stores but cannot find store managers fast enough, while a national competitor is opening in the same area.',a:'Its strength is deep local market knowledge and an existing staff network; the opportunity is local labor not yet poached. The SO strategy is a Store Manager Academy that grows existing department leads into managers within nine months, instead of bidding against competitors on salary.'},
+  q:[{q:'Which of the following correctly qualifies as a Weakness under SWOT?',o:['Minimum wage has increased','A major competitor has entered the area','First-year new-hire turnover is as high as 45%','Consumer purchasing power is slowing'],a:2,e:'A weakness must be an internal factor the organization controls or can fix; the other three are external.'},{q:'What does a WO strategy in the TOWS Matrix mean?',o:['Use strengths to capture opportunities','Fix weaknesses so opportunities can be captured','Use strengths to counter threats','Reduce damage from weaknesses and threats simultaneously'],a:1,e:'WO stands for Weakness-Opportunity: closing an internal gap so an open opportunity is not missed.'}]},
+ zh:{t:'战略环境分析',en:'',sum:'运用PESTEL、五力模型与SWOT解读内外部环境，再透过TOWS矩阵转化为具体的战略选择。',tags:['PESTEL','SWOT/TOWS','VRIO'],
+  keys:[{h:'PESTEL分析',d:'检视六大宏观因素：政治、经济、社会、科技、环境与法律。对人力资源而言，影响最大的通常是人口结构变化、劳动法规，以及改变工作内容本质的科技发展。'},{h:'真正可用的SWOT分析',d:'优势与劣势必须是内部且可控的因素；机会与威胁则必须是外部因素。最常见的错误是把劣势写成外部因素，导致根本无法找到改善的方法。'},{h:'TOWS矩阵',d:'将各项因素两两配对，形成四类战略：SO运用优势掌握机会；ST运用优势应对威胁；WO改善劣势以掌握机会；WT则采防御姿态，同时降低劣势与威胁的风险。'},{h:'VRIO与人力资本',d:'能创造持续竞争优势的资源，必须具备价值性、稀缺性、难以模仿性，且组织本身能有效运用。深植于团队中的隐性知识符合此标准，而任何人都能购买的现成软件则不符合。'}],
+  tools:['PESTEL Canvas','SWOT/TOWS Builder','VRIO Checklist'],
+  cs:{s:'某区域零售企业正在扩张分店，但门店经理的招募速度始终跟不上，与此同时，来自首都的竞争对手也开始在同一地区开设门市。',a:'该企业的优势在于对本地市场的深入了解以及既有的员工网络；机会则是尚未被挖角的当地人力。对应的SO战略是建立「店长学院」，在九个月内将现有部门主管培养晋升为店长，而不是用更高薪资与对手正面争抢人才。'},
+  q:[{q:'根据SWOT分析原则，以下哪一项才属于正确的「劣势」？',o:['最低工资调涨','大型竞争对手进入该地区','新进员工第一年的离职率高达45%','消费者购买力放缓'],a:2,e:'劣势必须是组织能够控制或加以改善的内部因素，其余三项皆属于外部因素。'},{q:'TOWS矩阵中的WO战略是指什么？',o:['运用优势掌握机会','改善劣势以便能够掌握机会','运用优势应对威胁','同时降低劣势与威胁所造成的损害'],a:1,e:'WO即劣势-机会战略：弥补内部短板，以免错失当前已开启的外部机会。'}]}}},
+{id:3,ic:'🎯',tool:'kpi',hue:'#7a1f4f',i18n:{
+ th:{t:'การถ่ายทอดกลยุทธ์ด้วย Balanced Scorecard',en:'Strategy Map & Balanced Scorecard',sum:'แปลวิสัยทัศน์เป็นแผนที่กลยุทธ์สี่มุมมอง แล้วถ่ายทอดลงเป็น KPI ระดับฝ่ายและระดับบุคคล',tags:['BSC','Strategy Map','Cascading'],
+  keys:[{h:'สี่มุมมองของ BSC',d:'การเงิน ลูกค้า กระบวนการภายใน และการเรียนรู้กับการเติบโต โดยมุมมองล่างเป็นเหตุของมุมมองบน ทุนมนุษย์จึงอยู่ฐานล่างสุดของแผนที่กลยุทธ์'},{h:'Strategy Map',d:'เขียนความสัมพันธ์เชิงเหตุผลเป็นลูกศร เช่น เพิ่มทักษะช่างเทคนิค → ลดเวลาซ่อมเครื่อง → ส่งมอบตรงเวลา → ลูกค้าพึงพอใจ → ยอดขายซ้ำเพิ่ม การเขียนแบบนี้ป้องกันการตั้ง KPI ที่ไม่เชื่อมกับผลลัพธ์'},{h:'การ Cascade ลงสู่หน่วยงาน',d:'KPI องค์กรกระจายลงฝ่ายได้สามแบบ แบ่งค่าเป้าหมาย, ใช้ตัวชี้วัดเดียวกันทั้งสายงาน, หรือแปลงเป็นตัวชี้วัดกิจกรรมที่ฝ่ายควบคุมได้จริง'},{h:'Lead vs Lag Indicator',d:'Lag บอกผลที่เกิดแล้ว เช่น ยอดขาย ส่วน Lead บอกสัญญาณล่วงหน้า เช่น จำนวนใบเสนอราคา แผน BSC ที่ดีต้องมีทั้งสองประเภทในสัดส่วนที่สมดุล'}],
+  tools:['Strategy Map Canvas','KPI Scorecard Calculator','Cascading Matrix'],
+  cs:{s:'บริษัทตั้งเป้ากำไรโต 15% แต่ทุกฝ่ายตั้ง KPI เป็นงานประจำของตัวเอง ปลายปีทุกฝ่ายได้เกรด A แต่กำไรกลับลดลง',a:'อาการนี้เกิดจากไม่มี Strategy Map จึงไม่มีเส้นเชื่อมระหว่าง KPI ฝ่ายกับผลลัพธ์องค์กร ทางแก้คือวาดแผนที่กลยุทธ์ใหม่ กำหนดตัวขับเคลื่อนหลักไม่เกิน 3-4 ตัวต่อมุมมอง แล้วบังคับว่าทุก KPI ของฝ่ายต้องอ้างอิงกลับไปที่วัตถุประสงค์บนแผนที่ได้'},
+  q:[{q:'ในแผนที่กลยุทธ์ตามแนวคิด BSC มุมมองใดถือเป็นฐานรากที่ขับเคลื่อนมุมมองอื่น',o:['มุมมองด้านการเงิน','มุมมองด้านลูกค้า','มุมมองกระบวนการภายใน','มุมมองการเรียนรู้และการเติบโต'],a:3,e:'การเรียนรู้และการเติบโตคือทุนมนุษย์ ทุนสารสนเทศ และทุนองค์กร ซึ่งเป็นเหตุของมุมมองที่อยู่สูงขึ้นไป'},{q:'ข้อใดเป็น Leading Indicator',o:['กำไรสุทธิรายไตรมาส','อัตราการลาออกที่เกิดขึ้นแล้ว','จำนวนพนักงานที่ผ่านการรับรองทักษะใหม่ในเดือนนี้','ส่วนแบ่งตลาดปีที่ผ่านมา'],a:2,e:'จำนวนผู้ผ่านการรับรองทักษะเป็นสัญญาณล่วงหน้าของผลิตภาพที่จะเกิดขึ้น อีกสามข้อเป็น Lag Indicator'}]},
+ en:{t:'Cascading Strategy with the Balanced Scorecard',en:'',sum:'Translate vision into a four-perspective strategy map, then cascade it into department and individual KPIs.',tags:['BSC','Strategy Map','Cascading'],
+  keys:[{h:'Four BSC perspectives',d:'Financial, Customer, Internal Process, and Learning & Growth. Lower perspectives cause the ones above, which is why human capital sits at the base of the strategy map.'},{h:'Strategy map',d:'Draw cause-and-effect arrows, e.g. upskill technicians → shorter repair time → on-time delivery → customer satisfaction → repeat sales. This prevents KPIs that do not connect to outcomes.'},{h:'Cascading to departments',d:'Corporate KPIs cascade three ways: splitting the target, sharing the same metric across a function, or converting it into an activity metric the department directly controls.'},{h:'Lead vs lag indicators',d:'Lag indicators show results that already happened, e.g. sales; lead indicators are early signals, e.g. quotes issued. A good scorecard balances both.'}],
+  tools:['Strategy Map Canvas','KPI Scorecard Calculator','Cascading Matrix'],
+  cs:{s:'A company set a 15% profit growth target, but every department wrote KPIs for their own routine work. At year end every department scored an A, yet profit fell.',a:'This is caused by having no strategy map linking department KPIs to corporate results. Redraw the strategy map, limit key drivers to three or four per perspective, and require every department KPI to trace back to an objective on the map.'},
+  q:[{q:'In a BSC strategy map, which perspective is the foundation that drives the others?',o:['Financial perspective','Customer perspective','Internal process perspective','Learning and growth perspective'],a:3,e:'Learning and growth covers human, information and organizational capital — the root cause of the perspectives above it.'},{q:'Which of the following is a Leading Indicator?',o:['Net profit this quarter','Turnover rate that has already occurred','Number of employees certified in a new skill this month','Market share last year'],a:2,e:'Newly certified employees is an early signal of future productivity; the other three are lagging indicators.'}]},
+ zh:{t:'运用平衡计分卡展开战略',en:'',sum:'将愿景转化为涵盖四大构面的战略地图，再逐层展开为部门与个人层级的KPI。',tags:['BSC','Strategy Map','Cascading'],
+  keys:[{h:'平衡计分卡的四大构面',d:'财务、顾客、内部流程，以及学习与成长。下层构面是上层构面的成因，因此人力资本位于战略地图的最底层基础。'},{h:'战略地图',d:'以箭头描绘因果关系，例如：提升技术人员技能 → 缩短设备维修时间 → 准时交货 → 顾客满意 → 回购销售增加。如此可避免制定出与最终成果毫无关联的KPI。'},{h:'向部门层层展开',d:'组织层级的KPI可透过三种方式向下展开：分配目标数值、整条业务条线共用同一指标，或转化为该部门真正能掌控的活动性指标。'},{h:'领先指标与落后指标',d:'落后指标反映已发生的结果，例如营业额；领先指标则提供预警信号，例如报价单数量。良好的平衡计分卡必须两者兼具且比例均衡。'}],
+  tools:['Strategy Map Canvas','KPI Scorecard Calculator','Cascading Matrix'],
+  cs:{s:'某公司设定了利润成长15%的目标，但各部门却各自以自身的日常工作内容制定KPI。年底时所有部门都获得A等评价，公司利润却反而下滑。',a:'这种现象源于缺乏战略地图，导致部门KPI与组织整体成果之间毫无连结。解决方法是重新绘制战略地图，每个构面限定三至四个关键驱动因素，并规定每个部门的KPI都必须能回溯对应到地图上的战略目标。'},
+  q:[{q:'在平衡计分卡的战略地图中，哪一个构面是驱动其他构面的根本基础？',o:['财务构面','顾客构面','内部流程构面','学习与成长构面'],a:3,e:'学习与成长构面涵盖人力资本、信息资本与组织资本，是位于其上层各构面的根本成因。'},{q:'以下哪一项属于领先指标？',o:['本季的净利润','已经发生的离职率','本月完成新技能认证的员工人数','去年的市场占有率'],a:2,e:'完成新技能认证的员工人数，是未来生产力表现的提前信号；其余三项皆属于落后指标。'}]}}},
+{id:4,ic:'📐',tool:'fte',hue:'#1f5f5b',i18n:{
+ th:{t:'การวางแผนกำลังคน',en:'Workforce & Manpower Planning',sum:'คำนวณความต้องการกำลังคนจากปริมาณงานจริง วิเคราะห์ช่องว่าง และวางแผนปิดช่องว่างด้วย Build-Buy-Borrow',tags:['FTE','Demand-Supply Gap','Succession'],
+  keys:[{h:'สามวิธีประมาณความต้องการ',d:'Workload Analysis คำนวณจากชั่วโมงงานจริง, Ratio Analysis อิงอัตราส่วนต่อยอดขายหรือต่อลูกค้า, Judgmental ใช้ดุลยพินิจผู้บริหาร วิธีแรกแม่นที่สุดแต่ต้องมีข้อมูลเวลามาตรฐาน'},{h:'การคำนวณ FTE',d:'FTE ที่ต้องการ = ปริมาณงานทั้งปี (ชั่วโมง) ÷ ชั่วโมงทำงานสุทธิต่อคนต่อปี โดยชั่วโมงสุทธิต้องหักวันหยุด วันลา และเวลาที่ไม่ใช่งานหลักออกแล้ว'},{h:'Demand-Supply Gap',d:'อุปทานภายใน = กำลังคนปัจจุบัน − การสูญเสียที่คาดการณ์ + การเลื่อนหรือโอนย้ายเข้า ช่องว่างที่เหลือคือจำนวนที่ต้องสรรหาจากภายนอก'},{h:'Build, Buy, Borrow, Bind',d:'Build พัฒนาคนใน, Buy สรรหาจากนอก, Borrow ใช้ outsource หรือสัญญาจ้าง, Bind รักษาคนสำคัญไว้ ตำแหน่งที่หายากและสำคัญควรเน้น Build กับ Bind มากกว่า Buy'}],
+  tools:['FTE Calculator','Succession Planning Matrix','Attrition Forecast'],
+  cs:{s:'ฝ่ายบริการลูกค้ารับสายปีละ 180,000 สาย เฉลี่ยสายละ 6 นาที ผู้จัดการขอเพิ่มคน 10 อัตราโดยอ้างว่าคนไม่พอ',a:'แปลงเป็นชั่วโมง 180,000 × 0.1 = 18,000 ชั่วโมงต่อปี ถ้าชั่วโมงสุทธิต่อคนคือ 1,560 ชั่วโมง และอัตราใช้งานจริง 75% จะได้ความต้องการประมาณ 15.4 FTE เทียบกับคนปัจจุบัน 12 คน ช่องว่างคือ 3-4 อัตรา ไม่ใช่ 10 ใช้เครื่องมือในบทนี้คำนวณดูได้'},
+  q:[{q:'การคำนวณชั่วโมงทำงานสุทธิต่อคนต่อปีต้องหักสิ่งใดออกจากชั่วโมงตามปฏิทิน',o:['เฉพาะวันหยุดนักขัตฤกษ์','วันหยุด วันลา และเวลาที่ไม่ได้ทำงานหลัก','เฉพาะวันลาพักร้อน','ไม่ต้องหักอะไร'],a:1,e:'ต้องหักทั้งวันหยุดประจำสัปดาห์ วันหยุดนักขัตฤกษ์ วันลาทุกประเภท และเวลาที่ใช้กับงานที่ไม่ใช่ภารกิจหลัก'},{q:'ตำแหน่งที่มีความสำคัญสูงต่อธุรกิจและหาคนในตลาดยาก ควรใช้กลยุทธ์ใดเป็นหลัก',o:['Buy สรรหาจากภายนอกอย่างเดียว','Borrow ใช้ outsource ทั้งหมด','Build และ Bind พัฒนาและรักษาคนใน','ปล่อยว่างไว้จนกว่าจะมีผู้สมัคร'],a:2,e:'ตำแหน่งสำคัญที่หายากมีความเสี่ยงสูงถ้าพึ่งตลาดภายนอก จึงต้องสร้างสายป้อนภายในและมีแผนรักษาคน'}]},
+ en:{t:'Workforce and Manpower Planning',en:'',sum:'Calculate headcount demand from real workload, analyze the gap, and close it using Build-Buy-Borrow.',tags:['FTE','Demand-Supply Gap','Succession'],
+  keys:[{h:'Three estimation methods',d:'Workload Analysis calculates from actual work hours; Ratio Analysis uses a ratio to sales or customers; Judgmental relies on management judgment. The first is most accurate but needs standard time data.'},{h:'Calculating FTE',d:'Required FTE = total annual workload (hours) ÷ net working hours per person per year, where net hours already exclude holidays, leave and non-core time.'},{h:'Demand-supply gap',d:'Internal supply = current headcount − expected losses + promotions or transfers in. The remaining gap must be recruited externally.'},{h:'Build, buy, borrow, bind',d:'Build develops people internally, Buy hires externally, Borrow uses outsourcing or contracts, Bind retains key talent. Rare, critical roles should lean on Build and Bind rather than Buy.'}],
+  tools:['FTE Calculator','Succession Planning Matrix','Attrition Forecast'],
+  cs:{s:'A customer service department handles 180,000 calls a year, averaging six minutes each. The manager requests ten more headcount, claiming a shortage.',a:'Converting to hours: 180,000 × 0.1 = 18,000 hours per year. With net hours of 1,560 and 75% real utilization, required FTE is about 15.4 versus 12 current staff — a gap of only three to four, not ten.'},
+  q:[{q:'What must be deducted when calculating net working hours per person per year?',o:['Only public holidays','Holidays, leave, and time not spent on core work','Only annual leave','Nothing needs to be deducted'],a:1,e:'You must deduct weekly days off, public holidays, all types of leave, and time on non-core duties.'},{q:'For a role critical to the business and hard to find, which strategy should be the main approach?',o:['Buy — hire externally only','Borrow — outsource everything','Build and Bind — develop and retain internal talent','Leave it vacant until candidates appear'],a:2,e:'Critical, scarce roles are too risky to rely on the external market, so an internal pipeline and retention plan are essential.'}]},
+ zh:{t:'人力资源规划',en:'',sum:'依据实际工作量计算人力需求，分析人力缺口，并运用自建、外购、借用等策略加以弥补。',tags:['FTE','Demand-Supply Gap','Succession'],
+  keys:[{h:'三种预估人力需求的方法',d:'工作量分析法依实际工时计算；比率分析法依营收或顾客数的比例推算；判断法则仰赖管理者的经验判断。第一种最为精确，但必须具备标准工时数据。'},{h:'FTE全职当量的计算',d:'所需FTE = 全年工作总量（小时）÷ 每人每年净工作时数；净工作时数必须已扣除假日、各类请假，以及非核心工作所耗费的时间。'},{h:'供需缺口分析',d:'内部供给 = 现有人力 − 预估流失人数 + 晋升或调入人数。计算后剩余的缺口，即为必须对外招募的人数。'},{h:'自建、外购、借用、留才',d:'自建是培养内部人才；外购是对外招募；借用是运用外包或合约用工；留才则是保留关键人才。稀缺且关键的职位，应优先着重自建与留才。'}],
+  tools:['FTE Calculator','Succession Planning Matrix','Attrition Forecast'],
+  cs:{s:'客服部门每年接听18万通电话，平均每通6分钟。部门经理以人手不足为由，要求增加10个人力编制。',a:'换算成工时：180,000 × 0.1 = 每年18,000小时。若每人每年净工时为1,560小时、实际稼动率为75%，则所需人力约为15.4个FTE。与现有的12人相比，实际缺口仅为3至4人，而非10人。'},
+  q:[{q:'计算每人每年净工作时数时，必须从日历工时中扣除哪些项目？',o:['仅扣除国定假日','假日、各类请假天数，以及非核心工作所占用的时间','仅扣除年假','不需要扣除任何项目'],a:1,e:'必须扣除每周休息日、国定假日、所有类型的请假，以及花费在非核心职责上的时间。'},{q:'对于业务重要性高且市场上难以寻觅人才的职位，应以哪一种策略为主？',o:['仅采用外购策略，完全对外招募','仅采用借用策略，全面外包','采用自建与留才策略，培养并保留内部人才','让职位持续空缺，直到有应征者出现'],a:2,e:'关键且稀缺的职位若完全依赖外部市场，风险极高，必须建立内部人才梯队并制定留才计划。'}]}}},
+{id:5,ic:'⚖️',tool:'je',hue:'#5c4326',i18n:{
+ th:{t:'การวิเคราะห์และประเมินค่างาน',en:'Job Analysis & Job Evaluation',sum:'จากการวิเคราะห์งานสู่ JD ที่ใช้ได้จริง แล้วประเมินค่างานด้วยระบบคะแนนปัจจัยเพื่อจัดระดับตำแหน่ง',tags:['Job Description','Point Factor','Grading'],
+  keys:[{h:'Job Analysis',d:'เก็บข้อมูลด้วยการสัมภาษณ์ สังเกต แบบสอบถาม หรือบันทึกงานประจำวัน ผลลัพธ์คือ Job Description บอกว่างานคืออะไร และ Job Specification บอกว่าคนทำงานต้องมีคุณสมบัติอะไร'},{h:'หลักการสำคัญของการประเมินค่างาน',d:'ประเมินที่ตัวงาน ไม่ใช่ตัวคนที่นั่งอยู่ในตำแหน่ง ผลงานดีเป็นเรื่องของการขึ้นเงินเดือน ไม่ใช่เหตุผลในการปรับระดับตำแหน่ง'},{h:'วิธีประเมินสี่แบบ',d:'Ranking เรียงลำดับ, Classification จัดเข้าชั้นที่นิยามไว้, Point Factor ให้คะแนนตามปัจจัย, Factor Comparison เทียบปัจจัยกับงานหลัก ระบบ Point Factor โปร่งใสและอธิบายได้ดีที่สุดสำหรับองค์กรขนาดกลางขึ้นไป'},{h:'ปัจจัยที่นิยมใช้',d:'ความรู้และทักษะ, ความซับซ้อนในการแก้ปัญหา, ขอบเขตความรับผิดชอบต่อผลลัพธ์, การบริหารคน, การติดต่อประสานงาน และสภาพการทำงาน แต่ละปัจจัยมีน้ำหนักและระดับย่อย'}],
+  tools:['Point Factor Calculator','JD Template','Grade Structure Builder'],
+  cs:{s:'หัวหน้าแผนกคนหนึ่งทำงานดีมากจนผู้บริหารอยากปรับขึ้นเป็นระดับผู้จัดการ ทั้งที่ขอบเขตงานเท่าเดิม',a:'ถ้าปรับระดับตำแหน่งตามตัวบุคคล โครงสร้างจะพังทันทีเพราะจะมีผู้จัดการที่ขอบเขตงานไม่เท่ากัน ทางที่ถูกคือให้ค่าตอบแทนพิเศษหรือเลื่อนขั้นในกระบอกเดิม แล้วปรับระดับเมื่อขอบเขตงานเปลี่ยนจริง'},
+  q:[{q:'หลักการพื้นฐานที่สุดของการประเมินค่างานคือข้อใด',o:['ประเมินที่ตัวงาน ไม่ใช่ตัวผู้ครองตำแหน่ง','ประเมินจากผลงานย้อนหลังสามปี','ประเมินจากเงินเดือนปัจจุบัน','ประเมินจากอายุงาน'],a:0,e:'Job Evaluation วัดคุณค่าของตำแหน่งงาน ส่วนผลงานและอายุงานเป็นตัวแปรของการบริหารค่าตอบแทนรายบุคคล'},{q:'ข้อใดคือข้อได้เปรียบหลักของวิธี Point Factor เทียบกับ Ranking',o:['ทำได้เร็วกว่าและใช้คนน้อยกว่า','ให้เหตุผลเชิงปริมาณที่อธิบายและตรวจสอบได้','ไม่ต้องมี Job Description','ใช้ได้เฉพาะงานฝ่ายผลิต'],a:1,e:'Point Factor แจกแจงคะแนนรายปัจจัย จึงชี้แจงต่อพนักงานและผู้ตรวจสอบได้ว่าทำไมตำแหน่งหนึ่งสูงกว่าอีกตำแหน่ง'}]},
+ en:{t:'Job Analysis and Job Evaluation',en:'',sum:'From job analysis to a usable job description, then evaluate job worth with a point-factor system to grade positions.',tags:['Job Description','Point Factor','Grading'],
+  keys:[{h:'Job analysis',d:'Collect data through interviews, observation, questionnaires or work diaries. The output is a Job Description (what the job is) and a Job Specification (what qualifications the jobholder needs).'},{h:'The golden rule',d:'Evaluate the job itself, not the person currently in it. Good performance is a matter of pay increase, not a reason to upgrade the job grade.'},{h:'Four evaluation methods',d:'Ranking orders jobs relatively, Classification slots jobs into defined grades, Point Factor scores jobs on factors, Factor Comparison benchmarks against key jobs. Point Factor is the most transparent for mid-size organizations and above.'},{h:'Common factors used',d:'Knowledge and skill, problem-solving complexity, accountability for results, people management, working relationships, and working conditions. Each factor carries a weight and sub-levels.'}],
+  tools:['Point Factor Calculator','JD Template','Grade Structure Builder'],
+  cs:{s:'A department head performs excellently, and management wants to promote them to manager even though the scope of the job has not changed.',a:'Promoting the grade based on the person alone will break the structure. The right approach is a special allowance or a step increase within the current grade, and re-grade only once the scope genuinely changes.'},
+  q:[{q:'What is the most fundamental principle of job evaluation?',o:['Evaluate the job itself, not the current jobholder','Evaluate based on the last three years of performance','Evaluate based on current salary','Evaluate based on years of service'],a:0,e:'Job Evaluation measures the value of the position; performance and tenure are variables for individual pay management.'},{q:'What is the main advantage of Point Factor over Ranking?',o:['It is faster and needs fewer people','It gives a quantitative, auditable rationale','It does not require a job description','It only works for production jobs'],a:1,e:'Point Factor breaks scores down by factor, so the reasoning behind rankings can be explained and verified.'}]},
+ zh:{t:'工作分析与职务评价',en:'',sum:'从工作分析出发，制定真正可用的职位说明书，再以点数因素法评估职位价值，建立职等结构。',tags:['Job Description','Point Factor','Grading'],
+  keys:[{h:'工作分析',d:'透过访谈、观察、问卷或工作日志收集资料，产出成果为职位说明书（说明工作内容）与职位规范（说明任职者所需资格条件）。'},{h:'职务评价的核心原则',d:'评价的对象是职位本身，而非目前担任该职位的人员。优异的绩效应反映在加薪上，而不应成为调升职等的理由。'},{h:'四种评价方法',d:'排序法依相对高低排列；分类法归入预先定义的等级；点数因素法依各因素评分；因素比较法则以关键标竿职位为基准。对中大型组织而言，点数因素法最为透明。'},{h:'常用的评价因素',d:'知识与技能、解决问题的复杂度、对成果的责任范围、人员管理、协调沟通，以及工作环境条件。每项因素都有各自的权重与细分等级。'}],
+  tools:['Point Factor Calculator','JD Template','Grade Structure Builder'],
+  cs:{s:'某位部门主管表现极为出色，管理层希望将其晋升至经理层级，然而其实际工作职责范围其实完全没有改变。',a:'若仅因个人表现就调升职等，职等结构将立即崩坏。正确做法是给予特别津贴，或在现有薪级内晋级，待职责范围确实扩大后，再重新评定职等。'},
+  q:[{q:'职务评价最根本的原则是什么？',o:['评价职位本身，而非目前的任职者','依据过去三年的绩效表现进行评价','依据目前的薪资水平进行评价','依据年资长短进行评价'],a:0,e:'职务评价衡量的是职位本身的价值；绩效与年资属于个人薪酬管理的变量。'},{q:'点数因素法相较于排序法，最主要的优势为何？',o:['执行速度更快，所需人力更少','能提供可量化、可解释且可稽核的评价依据','完全不需要职位说明书','仅能适用于生产线相关职位'],a:1,e:'点数因素法依各因素分别列出得分，能清楚说明为何某一职位的评价高于另一职位。'}]}}},
+{id:6,ic:'🧩',tool:'cmp',hue:'#3d3a7a',i18n:{
+ th:{t:'การบริหารขีดความสามารถ',en:'Competency Management',sum:'ออกแบบ Competency Model สามชั้น วัดช่องว่าง และเชื่อมเข้ากับทุกระบบย่อยของ HR',tags:['Competency Model','Gap Analysis','Proficiency Level'],
+  keys:[{h:'โครงสร้างสามชั้น',d:'Core Competency ทุกคนต้องมีตามค่านิยมองค์กร, Managerial Competency สำหรับผู้ที่มีลูกน้อง, Functional Competency เฉพาะสายอาชีพ'},{h:'ระดับความเชี่ยวชาญ',d:'นิยม 5 ระดับ ตั้งแต่รู้พื้นฐาน ทำได้ภายใต้การกำกับ ทำได้เอง สอนคนอื่นได้ จนถึงออกแบบและกำหนดมาตรฐานได้ นิยามแต่ละระดับต้องเขียนเป็นพฤติกรรมที่สังเกตได้'},{h:'Gap Analysis',d:'ช่องว่าง = ระดับที่ตำแหน่งต้องการ − ระดับที่บุคคลมีจริง ช่องว่างตั้งแต่ 2 ระดับขึ้นไปในสมรรถนะที่สำคัญคือความเสี่ยงที่ต้องจัดการก่อน'},{h:'การนำไปใช้',d:'Competency เดียวกันต้องถูกใช้ตลอดวงจร ตั้งแต่ประกาศรับสมัคร คำถามสัมภาษณ์เชิงพฤติกรรม แผนพัฒนา การประเมินผล ไปจนถึงเกณฑ์เลื่อนตำแหน่ง มิฉะนั้นจะกลายเป็นเอกสารที่ไม่มีใครใช้'}],
+  tools:['Competency Gap Analyzer','BEI Question Bank','IDP Template'],
+  cs:{s:'องค์กรจ้างที่ปรึกษาทำ Competency Dictionary หนา 180 หน้า ผ่านไปสองปีไม่มีใครเปิดใช้',a:'สาเหตุคือทำละเอียดเกินและไม่ผูกกับกระบวนการใด ทางแก้คือตัดเหลือสมรรถนะที่สำคัญจริง 8-12 ตัว เขียนนิยามพฤติกรรมให้สั้น แล้วบังคับใช้ที่จุดเดียวก่อน เช่น ใช้ในแบบสัมภาษณ์ทุกตำแหน่ง'},
+  q:[{q:'ข้อใดจัดเป็น Core Competency',o:['การเขียนโปรแกรมภาษา Python','การวิเคราะห์งบการเงิน','การทำงานร่วมกับผู้อื่นตามค่านิยมองค์กร','การสอบเทียบเครื่องมือวัด'],a:2,e:'Core Competency คือสมรรถนะที่ทุกตำแหน่งในองค์กรต้องมีร่วมกัน มักสะท้อนค่านิยมองค์กร ส่วนที่เหลือเป็น Functional'},{q:'เหตุผลหลักที่ Competency Model จำนวนมากไม่ถูกนำไปใช้จริงคืออะไร',o:['องค์กรมีขนาดเล็กเกินไป','ไม่ได้เชื่อมเข้ากับกระบวนการ HR ที่ใช้งานจริง','พนักงานไม่มีวุฒิการศึกษาเพียงพอ','ไม่มีระบบสารสนเทศรองรับ'],a:1,e:'Competency ที่ไม่ผูกกับการสรรหา ประเมิน หรือพัฒนา จะกลายเป็นเอกสารที่ไม่มีแรงจูงใจให้ใครใช้'}]},
+ en:{t:'Competency Management',en:'',sum:'Design a three-tier competency model, measure the gap, and link it to every HR sub-system.',tags:['Competency Model','Gap Analysis','Proficiency Level'],
+  keys:[{h:'Three-tier structure',d:'Core Competency required of everyone per company values, Managerial Competency for those with direct reports, and Functional Competency specific to each job family.'},{h:'Proficiency levels',d:'Typically five levels, from basic awareness, performing under supervision, performing independently, coaching others, to designing standards. Each level must be written as observable behavior.'},{h:'Gap analysis',d:'Gap = required level − actual level. A gap of two levels or more in a critical competency is a risk that must be addressed first.'},{h:'Putting it to use',d:'The same competency set must be used throughout the cycle — job postings, behavioral interviews, development plans, appraisal and promotion criteria — otherwise it becomes a document nobody uses.'}],
+  tools:['Competency Gap Analyzer','BEI Question Bank','IDP Template'],
+  cs:{s:'An organization paid consultants to build a 180-page competency dictionary. Two years later, nobody has opened it.',a:'It was too detailed and not tied to any process. Cut it to eight to twelve truly important competencies with short behavioral definitions, then enforce use at one point first — for example, every interview must use it.'},
+  q:[{q:'Which of the following is a Core Competency?',o:['Programming in Python','Financial statement analysis','Collaborating with others in line with company values','Calibrating measuring instruments'],a:2,e:'A Core Competency is shared by every position, usually reflecting company values; the rest are Functional.'},{q:'What is the main reason many competency models never get used?',o:['The organization is too small','They are not linked to any real HR process','Employees lack sufficient education','There is no IT system to support them'],a:1,e:'A competency model not tied to recruitment, appraisal or development gives no one a reason to use it.'}]},
+ zh:{t:'胜任力管理',en:'',sum:'设计三层级胜任力模型，衡量能力落差，并与人力资源各子系统紧密连结。',tags:['Competency Model','Gap Analysis','Proficiency Level'],
+  keys:[{h:'三层级架构',d:'核心胜任力是依组织价值观订定、所有员工都须具备的能力；管理胜任力适用于有下属的管理者；职能胜任力则是各专业职系特有的能力要求。'},{h:'熟练度等级',d:'通常划分五个等级：具备基础认知、能在指导下执行、能独立执行、能指导他人，直到能设计并制定标准。每一等级都必须以可观察的具体行为撰写。'},{h:'落差分析',d:'能力落差 = 职位要求等级 − 个人实际具备等级。关键胜任力出现两级以上落差，即属必须优先处理的组织风险。'},{h:'实际运用方式',d:'同一套胜任力必须贯穿整个人才管理循环——从职缺公告、行为面试题、发展计划、绩效考核到晋升标准都须一致，否则终将沦为无人翻阅的文件。'}],
+  tools:['Competency Gap Analyzer','BEI Question Bank','IDP Template'],
+  cs:{s:'某组织聘请顾问编制了厚达180页的胜任力字典，然而两年过去，几乎无人翻阅使用。',a:'根源在于内容过于繁琐，且未与任何实际流程连结。应精简为八至十二项真正关键的胜任力，撰写简洁的行为定义，并先在单一环节强制推行，例如所有职位的面试表格。'},
+  q:[{q:'以下哪一项属于核心胜任力？',o:['Python程式语言开发','财务报表分析','依循组织价值观与他人协作','量测仪器校准'],a:2,e:'核心胜任力是组织内所有职位共同具备的能力，通常反映组织价值观；其余属于职能胜任力。'},{q:'许多胜任力模型最终无法被实际运用，主因为何？',o:['组织规模过于小型','未与实际运作中的人力资源流程相连结','员工普遍学历不足','缺乏信息系统的支持'],a:1,e:'若未与招聘、考核或培育发展连结，便无法给予任何人使用它的动机。'}]}}},
+{id:7,ic:'🎣',tool:'fun',hue:'#0f5e6b',i18n:{
+ th:{t:'การสรรหาและคัดเลือกเชิงกลยุทธ์',en:'Strategic Recruitment & Selection',sum:'ออกแบบช่องทางสรรหาให้ตรงกลุ่ม ใช้การสัมภาษณ์เชิงโครงสร้าง และวัดคุณภาพการคัดเลือกด้วยข้อมูล',tags:['EVP','Structured Interview','Quality of Hire'],
+  keys:[{h:'Employee Value Proposition',d:'คำตอบว่าทำไมคนเก่งควรเลือกทำงานที่นี่ ประกอบด้วยค่าตอบแทน โอกาสเติบโต ลักษณะงาน วัฒนธรรม และความสมดุลชีวิต EVP ที่ดีต้องเป็นเรื่องจริงที่พนักงานปัจจุบันยืนยันได้'},{h:'ความแม่นยำของเครื่องมือคัดเลือก',d:'การสัมภาษณ์เชิงโครงสร้างและแบบทดสอบความสามารถทั่วไปมีอำนาจทำนายผลงานสูงกว่าการสัมภาษณ์แบบอิสระอย่างชัดเจน การใช้หลายเครื่องมือประกอบกันให้ผลดีกว่าเครื่องมือเดียว'},{h:'BEI',d:'Behavioral Event Interview ถามเหตุการณ์จริงในอดีตตามโครงสร้าง STAR คือสถานการณ์ ภารกิจ การกระทำ และผลลัพธ์ หลีกเลี่ยงคำถามสมมติที่ผู้สมัครตอบตามตำรา'},{h:'ตัวชี้วัดที่ควรติดตาม',d:'Time to Fill, Cost per Hire, Offer Acceptance Rate, Quality of Hire และอัตราการอยู่รอดใน 12 เดือนแรก ตัวสุดท้ายสะท้อนคุณภาพการคัดเลือกได้ดีที่สุด'}],
+  tools:['Recruitment Funnel Analyzer','STAR Interview Guide','Selection Scorecard'],
+  cs:{s:'ตำแหน่งวิศวกรซ่อมบำรุงเปิดรับ 5 เดือนยังไม่ได้คน ผู้สมัครที่มาสัมภาษณ์ปฏิเสธข้อเสนอเกินครึ่ง',a:'ปัญหาไม่ได้อยู่ที่ต้นทางแต่อยู่ที่ Offer Acceptance Rate ต้องไล่ดู Funnel ทีละขั้น ถ้าคนมาสัมภาษณ์พอแต่ปฏิเสธข้อเสนอ แปลว่าค่าตอบแทนหรือ EVP ไม่แข่งขัน ให้ทำ Salary Benchmark เทียบตลาดในพื้นที่ก่อน'},
+  q:[{q:'ตัวชี้วัดใดสะท้อนคุณภาพของการคัดเลือกได้ดีที่สุด',o:['จำนวนใบสมัครที่ได้รับ','ต้นทุนการสรรหาต่อคน','อัตราการอยู่รอดและผลงานของพนักงานใหม่ใน 12 เดือนแรก','จำนวนช่องทางประกาศรับสมัคร'],a:2,e:'ตัวเลขต้นทางบอกแค่ปริมาณ แต่การอยู่รอดและผลงานหลังรับเข้าคือหลักฐานว่าคัดเลือกได้ถูกคน'},{q:'การสัมภาษณ์แบบ BEI เน้นถามเรื่องใด',o:['สถานการณ์สมมติในอนาคต','เหตุการณ์จริงที่ผู้สมัครเคยทำในอดีต','ความรู้ทางทฤษฎี','บุคลิกภาพและความประทับใจแรก'],a:1,e:'BEI ตั้งอยู่บนสมมติฐานว่าพฤติกรรมในอดีตทำนายพฤติกรรมในอนาคตได้ดีที่สุด จึงถามเหตุการณ์จริงตามโครงสร้าง STAR'}]},
+ en:{t:'Strategic Recruitment and Selection',en:'',sum:'Design sourcing channels for the right audience, use structured interviews, and measure selection quality with data.',tags:['EVP','Structured Interview','Quality of Hire'],
+  keys:[{h:'Employee value proposition',d:'The answer to why talented people should work here: pay, growth, the nature of the work, culture, and work-life balance. A good EVP must be true and verifiable by current employees.'},{h:'Predictive validity of selection tools',d:'Structured interviews and general mental ability tests clearly predict performance better than unstructured interviews. Combining several tools works better than one.'},{h:'BEI',d:'Behavioral Event Interviewing asks about real past events using STAR — Situation, Task, Action, Result. Avoid hypothetical questions candidates can answer by the book.'},{h:'Metrics to track',d:'Time to Fill, Cost per Hire, Offer Acceptance Rate, Quality of Hire, and first-12-month survival rate. The last is the strongest reflection of selection quality.'}],
+  tools:['Recruitment Funnel Analyzer','STAR Interview Guide','Selection Scorecard'],
+  cs:{s:'A maintenance engineer position has been open for five months with no hire. More than half of candidates who interview reject the final offer.',a:'The problem is not at the top of the funnel but the Offer Acceptance Rate. If enough candidates reach interview but reject the offer, pay or EVP is not competitive. Run a market salary benchmark before spending more on advertising.'},
+  q:[{q:'Which metric best reflects the quality of selection?',o:['Number of applications received','Cost per hire','New hires survival and performance in the first 12 months','Number of job posting channels used'],a:2,e:'Top-of-funnel numbers only reflect volume; 12-month survival and performance proves the right person was chosen.'},{q:'What does a BEI interview mainly ask about?',o:['Hypothetical future scenarios','Real events the candidate actually experienced','Theoretical knowledge','Personality and first impression'],a:1,e:'BEI is based on the premise that past behavior best predicts future behavior, using the STAR structure.'}]},
+ zh:{t:'战略性招募与甄选',en:'',sum:'设计能精准触及目标族群的招募渠道，运用结构化面试，并以数据衡量甄选质量。',tags:['EVP','Structured Interview','Quality of Hire'],
+  keys:[{h:'员工价值主张',d:'回答「为何优秀人才应选择在此工作」，涵盖薪酬、成长机会、工作性质、企业文化与生活平衡。良好的价值主张必须真实，且能获现职员工印证。'},{h:'甄选工具的预测效度',d:'结构化面试与一般心智能力测验，对工作绩效的预测能力明显高于非结构化自由面谈。同时并用多种工具，效果远优于仅依赖单一工具。'},{h:'行为事件面谈法',d:'依循STAR架构——情境、任务、行动、结果——询问过去真实发生的事件。应避免假设性问题，因应征者往往能以教科书式答案轻易应对。'},{h:'应追踪的关键指标',d:'职缺补实天数、单次招募成本、录取接受率、录用质量，以及前12个月留任率。最后一项最能真实反映甄选流程质量。'}],
+  tools:['Recruitment Funnel Analyzer','STAR Interview Guide','Selection Scorecard'],
+  cs:{s:'某维修工程师职缺已开放招募五个月仍未觅得人选，且前来面试的应征者中，超过半数最终拒绝了录用邀约。',a:'症结不在招募漏斗前端，而在录取接受率。若面试人数已足够，最终却纷纷拒绝，即代表薪酬或员工价值主张缺乏竞争力。应先进行薪资基准比较。'},
+  q:[{q:'哪一项指标最能真实反映甄选流程的质量？',o:['所收到的求职申请总数','每位新进人员的平均招募成本','新进员工在前12个月的留任率与实际绩效表现','所使用的职缺公告渠道数量'],a:2,e:'漏斗前端的数字仅反映数量，录用后的留任与绩效才是真正证明「选对了人」的证据。'},{q:'行为事件面谈法主要着重于询问哪一类内容？',o:['未来可能发生的假设性情境','应征者过去实际经历并处理过的真实事件','各项专业理论知识','人格特质与初次见面的第一印象'],a:1,e:'行为事件面谈立基于「过去行为最能预测未来行为」的假设，依循STAR架构询问真实事件。'}]}}},
+{id:8,ic:'📚',tool:'roi',hue:'#7a3b1f',i18n:{
+ th:{t:'การพัฒนาและเส้นทางความก้าวหน้า',en:'Learning, Development & Career Path',sum:'ออกแบบ Training Roadmap ที่เชื่อมกับ Career Path และพิสูจน์ผลตอบแทนการอบรมด้วยตัวเลขที่ผู้บริหารการเงินยอมรับ',tags:['70:20:10','Kirkpatrick','Training ROI'],
+  keys:[{h:'70:20:10',d:'การเรียนรู้เกิดจากการลงมือทำ 70 การเรียนรู้จากผู้อื่น 20 และการอบรมในห้องเรียน 10 แผนพัฒนาที่มีแต่หลักสูตรอบรมจึงตอบโจทย์ได้เพียงส่วนน้อยของการเรียนรู้จริง'},{h:'Training Roadmap',d:'ตารางสองแกน แกนหนึ่งคือระดับตำแหน่งตั้งแต่ปฏิบัติการถึงผู้บริหาร อีกแกนคือกลุ่มสมรรถนะ ช่องในตารางระบุหลักสูตรที่ต้องผ่านในแต่ละระดับ ทำให้พนักงานเห็นเส้นทางของตัวเองล่วงหน้า'},{h:'Career Path',d:'มีทั้งแบบแนวตั้งเลื่อนขึ้นตามสายบังคับบัญชา และแบบ Dual Career Path ที่เปิดสายผู้เชี่ยวชาญคู่ขนานกับสายบริหาร เพื่อไม่บังคับให้ผู้เชี่ยวชาญต้องมาคุมคนเพื่อความก้าวหน้า'},{h:'Kirkpatrick และ ROI ระดับที่ 5',d:'ระดับ 1 ปฏิกิริยา ระดับ 2 การเรียนรู้ ระดับ 3 พฤติกรรม ระดับ 4 ผลลัพธ์ทางธุรกิจ และ Phillips เพิ่มระดับ 5 คือ ROI ที่แปลงผลลัพธ์เป็นเงินแล้วหักต้นทุน ตัวเลขนี้เท่านั้นที่ CFO ยอมรับ'}],
+  tools:['Training ROI Calculator','Training Roadmap Matrix','IDP Builder'],
+  cs:{s:'ฝ่ายฝึกอบรมจัดหลักสูตรได้ตามแผน 100% คะแนนความพึงพอใจเฉลี่ย 4.6 เต็ม 5 แต่ผู้บริหารถามว่าได้อะไรกลับมา',a:'ตัวเลขทั้งสองอยู่ในระดับ 1 ของ Kirkpatrick เท่านั้น เลือกหลักสูตรสำคัญ 2-3 ตัว กำหนดตัวชี้วัดพฤติกรรมล่วงหน้า ให้หัวหน้างานประเมินซ้ำที่ 90 วัน แล้วแปลงผลปฏิบัติการเช่นของเสียที่ลดลงเป็นตัวเงิน ใส่ใน Training ROI Calculator พร้อมปรับด้วย Isolation Factor'},
+  q:[{q:'ตามหลัก 70:20:10 สัดส่วนการเรียนรู้ที่มากที่สุดมาจากอะไร',o:['การอบรมในห้องเรียน','การเรียนรู้จากผู้อื่นและการโค้ช','การลงมือปฏิบัติงานจริง','การอ่านเอกสารด้วยตนเอง'],a:2,e:'70 คือ Experiential Learning การเรียนรู้จากการทำงานจริงและการได้รับมอบหมายงานที่ท้าทาย'},{q:'ในการคำนวณ Training ROI ตัวคูณ Isolation Factor มีไว้เพื่ออะไร',o:['เพื่อเพิ่มมูลค่าผลลัพธ์ให้ดูดีขึ้น','เพื่อตัดผลที่เกิดจากปัจจัยอื่นที่ไม่ใช่การอบรมออกไป','เพื่อคำนวณภาษีของค่าใช้จ่ายการอบรม','เพื่อกระจายต้นทุนไปยังปีถัดไป'],a:1,e:'Isolation Factor คือสัดส่วนที่เชื่อว่าผลลัพธ์เกิดจากการอบรมจริง โดยตัดอิทธิพลของระบบใหม่ ฤดูกาล หรือการเปลี่ยนกระบวนการออก ทำให้ตัวเลข ROI น่าเชื่อถือ'}]},
+ en:{t:'Learning, Development and Career Path',en:'',sum:'Design a training roadmap linked to career paths, and prove training return with numbers finance executives accept.',tags:['70:20:10','Kirkpatrick','Training ROI'],
+  keys:[{h:'70:20:10',d:'Learning comes from doing (70), from others (20), and from formal training (10). A plan built only on courses covers only a minority of real learning.'},{h:'Training roadmap',d:'A two-axis matrix: job level from operational to executive, and competency clusters. Each cell specifies the course required at that level, so employees see their path in advance.'},{h:'Career path',d:'Includes a vertical path up the chain of command, and a Dual Career Path opening a parallel expert track, so specialists are not forced to manage people just to advance.'},{h:'Kirkpatrick and level 5 ROI',d:'Level 1 Reaction, 2 Learning, 3 Behavior, 4 Business Results — and Phillips adds Level 5 ROI, converting results into money and subtracting cost. Only this number convinces a CFO.'}],
+  tools:['Training ROI Calculator','Training Roadmap Matrix','IDP Builder'],
+  cs:{s:'The training department delivered 100% of planned courses with 4.6 out of 5 satisfaction, yet management asks what the business actually got back.',a:'Both numbers sit only at Kirkpatrick Level 1. Pick two or three key courses, define expected behavior change in advance, re-assess at 90 days, then convert operational results such as reduced defects into money and enter them into the Training ROI Calculator with an isolation factor.'},
+  q:[{q:'According to 70:20:10, where does the largest share of learning come from?',o:['Classroom training','Learning from others and coaching','Hands-on job experience','Reading materials independently'],a:2,e:'The 70 represents experiential learning — learning by doing the actual work and taking challenging assignments.'},{q:'In a Training ROI calculation, what is the isolation factor for?',o:['To inflate the benefit figure','To strip out results caused by factors other than the training','To calculate tax on training expenses','To spread the cost into the following year'],a:1,e:'The isolation factor is the share of the result genuinely attributable to training, removing the influence of new systems, seasonality or process changes.'}]},
+ zh:{t:'人才培育与职涯发展路径',en:'',sum:'设计与职涯路径连结的培训蓝图，并以财务主管能接受的数字证明培训的投资报酬。',tags:['70:20:10','Kirkpatrick','Training ROI'],
+  keys:[{h:'70:20:10学习法则',d:'70%源自实际动手执行，20%源自向他人学习，仅10%来自课堂培训。若发展计划中只有培训课程，实际上仅涵盖真正学习成效中的一小部分。'},{h:'培训发展蓝图',d:'双轴矩阵表：一轴为职级，从基层作业到高阶主管；另一轴为能力群组。每格明确标示该职级须完成的课程，让员工预先清楚看见自己的发展路径。'},{h:'职涯发展路径',d:'包含沿指挥体系向上晋升的垂直路径，以及开辟与管理职并行的专家职涯双轨制，使专业人才不必为求晋升而被迫转任管理职务。'},{h:'柯克派翠克与第五层次ROI',d:'第一层反应、第二层学习、第三层行为、第四层业务成果，而菲利普斯再增加第五层ROI——将成果转化为金额后扣除成本。唯有此一数字能真正说服财务长。'}],
+  tools:['Training ROI Calculator','Training Roadmap Matrix','IDP Builder'],
+  cs:{s:'培训部门百分之百达成开课计划，学员平均满意度高达4.6分，然而管理层质疑：公司究竟从中获得了什么实质回报？',a:'两项数字都仅停留在柯克派翠克第一层次。应挑选二至三门关键课程，事先定义预期行为改变，请主管于90天后再次评估，并将不良率下降等营运成果转化为金额，输入培训ROI计算工具并以隔离系数加以调整。'},
+  q:[{q:'依据70:20:10法则，占比最高的学习成效来自何处？',o:['课堂中的集中培训','向他人学习以及教练式辅导','实际动手执行工作任务','自行阅读各类书面资料'],a:2,e:'其中的70代表体验式学习，即透过实际执行工作任务及承接具挑战性专案所获得的学习成效。'},{q:'在计算培训投资报酬率时，隔离系数的用途为何？',o:['用以提高效益数字，使其看起来更为亮眼','用以扣除并非由培训所造成的成果部分','用以计算培训费用的相关税额','用以将成本分摊至下一年度'],a:1,e:'隔离系数代表成果中真正归因于培训的比例，藉此排除新系统、季节性或流程变更的影响。'}]}}},
+{id:9,ic:'📊',tool:'kpi',hue:'#264d8c',i18n:{
+ th:{t:'การบริหารผลการปฏิบัติงาน',en:'Performance Management, KPI & OKR',sum:'ออกแบบ KPI ที่วัดได้จริง เลือกใช้ OKR ให้ถูกสถานการณ์ และบริหารวงจรประเมินผลทั้งปี',tags:['KPI','OKR','Calibration'],
+  keys:[{h:'KPI ที่ดี',d:'ต้องมีสูตรคำนวณชัดเจน มีแหล่งข้อมูลที่ตรวจสอบได้ มีผู้รับผิดชอบ และมีค่าเป้าหมายที่ท้าทายแต่เป็นไปได้ KPI ที่เขียนว่าปรับปรุงให้ดีขึ้นโดยไม่มีตัวเลขไม่ถือเป็น KPI'},{h:'KPI กับ OKR ต่างกันอย่างไร',d:'KPI เหมาะกับงานประจำที่ต้องรักษามาตรฐาน ส่วน OKR เหมาะกับเป้าหมายที่ต้องการก้าวกระโดดในช่วงเวลาสั้น องค์กรจำนวนมากใช้ทั้งคู่ควบกัน ไม่ใช่เลือกอย่างใดอย่างหนึ่ง'},{h:'น้ำหนักและการให้คะแนน',d:'น้ำหนักรวมต้องเท่ากับ 100% จำนวน KPI ต่อคนไม่ควรเกิน 5-7 ตัว คะแนนคำนวณจากผลสำเร็จเทียบเป้าหมายคูณน้ำหนัก แล้วรวมเป็นคะแนนถ่วงน้ำหนัก'},{h:'Calibration',d:'การประชุมปรับเทียบมาตรฐานการให้คะแนนระหว่างผู้ประเมิน เพื่อลด Leniency Error และ Halo Effect เป็นขั้นตอนที่ขาดไม่ได้ถ้าจะให้ผลประเมินผูกกับเงินเดือนอย่างเป็นธรรม'}],
+  tools:['KPI Scorecard Calculator','OKR Canvas','Calibration Grid'],
+  cs:{s:'ผลประเมินประจำปีออกมาว่า 82% ของพนักงานได้เกรดดีถึงดีมาก แต่ผลประกอบการองค์กรต่ำกว่าเป้า',a:'เป็นอาการคลาสสิกของ Leniency Error ร่วมกับ KPI ที่ไม่ท้าทาย แก้สองทางพร้อมกัน ด้านหนึ่งทบทวนค่าเป้าหมายให้อิงฐานผลงานจริงและ benchmark อีกด้านหนึ่งจัดประชุม Calibration ระดับฝ่ายก่อนสรุปเกรด'},
+  q:[{q:'ข้อความใดใช้เป็น KPI ได้จริง',o:['ปรับปรุงการบริการให้ดีขึ้น','ลดระยะเวลาตอบกลับลูกค้าเฉลี่ยจาก 24 ชั่วโมงเหลือ 8 ชั่วโมงภายในไตรมาส 4','ใส่ใจลูกค้ามากขึ้น','พัฒนาทีมงานอย่างต่อเนื่อง'],a:1,e:'KPI ต้องระบุตัววัด ค่าฐาน ค่าเป้าหมาย และกรอบเวลา มีเพียงข้อเดียวที่ครบทั้งสี่องค์ประกอบ'},{q:'การประชุม Calibration มีวัตถุประสงค์หลักเพื่ออะไร',o:['กำหนดค่าเป้าหมายของปีถัดไป','ลดความลำเอียงและทำให้มาตรฐานการให้คะแนนระหว่างผู้ประเมินสอดคล้องกัน','คัดเลือกพนักงานดีเด่น','ทบทวนโครงสร้างเงินเดือน'],a:1,e:'Calibration คือการปรับเทียบมาตรฐานผู้ประเมิน เพื่อให้คะแนนเทียบข้ามหน่วยงานได้อย่างเป็นธรรม'}]},
+ en:{t:'Performance Management, KPI and OKR',en:'',sum:'Design measurable KPIs, use OKR where it fits, and manage the full-year appraisal cycle.',tags:['KPI','OKR','Calibration'],
+  keys:[{h:'What makes a good KPI',d:'It needs a clear formula, a verifiable data source, a clear owner, and a target that is challenging yet achievable. "Improve service" with no number is not a real KPI.'},{h:'KPI vs OKR',d:'KPI suits ongoing work where standards must be maintained; OKR suits breakthrough goals over a short period. Many organizations use both rather than choosing one.'},{h:'Weighting and scoring',d:'Total weight must equal 100%. Each person should have no more than five to seven KPIs. Score equals achievement versus target multiplied by weight.'},{h:'Calibration',d:'A meeting to align rating standards across managers, reducing leniency error and halo effect. Essential if appraisal results are fairly linked to pay.'}],
+  tools:['KPI Scorecard Calculator','OKR Canvas','Calibration Grid'],
+  cs:{s:'Annual appraisal results show 82% of employees rated good or excellent, yet actual company performance fell below target.',a:'A classic case of leniency error combined with unchallenging KPIs. Review targets against real baselines and benchmarks, and hold a calibration meeting before finalizing ratings.'},
+  q:[{q:'Which statement can actually be used as a real KPI?',o:['Improve customer service','Reduce average customer response time from 24 hours to 8 hours by Q4','Care more about customers','Continuously develop the team'],a:1,e:'A KPI needs a metric, a baseline, a target, and a timeframe; only one option contains all four.'},{q:'What is the main purpose of a Calibration meeting?',o:['Setting next year targets','Reducing bias and aligning rating standards across managers','Selecting top-performing employees','Reviewing the salary structure'],a:1,e:'Calibration aligns evaluator standards so ratings can be fairly compared across departments.'}]},
+ zh:{t:'绩效管理、KPI与OKR',en:'',sum:'设计真正可衡量的KPI，在适当情境下选用OKR，并妥善管理全年度的绩效评估循环。',tags:['KPI','OKR','Calibration'],
+  keys:[{h:'优良KPI的构成要件',d:'必须具备明确的计算公式、可查证的数据来源、清楚的权责归属，以及具挑战性但可达成的目标值。仅写「改善服务品质」而无具体数字，不算真正的KPI。'},{h:'KPI与OKR的差异',d:'KPI适用于须维持既有标准的例行性工作；OKR则适用于短期内追求突破性成长的目标。许多组织是两者并行，而非二择其一。'},{h:'权重设定与计分',d:'所有权重加总必须等于100%，每人的KPI数量不宜超过五至七项。分数为实际达成率对照目标值后乘以权重，最后加总为加权总分。'},{h:'校准会议',d:'由各评估者共同召开，校准彼此评分标准的会议，用以降低宽大误差与月晕效应。若希望绩效结果能公平与薪酬连动，此步骤不可或缺。'}],
+  tools:['KPI Scorecard Calculator','OKR Canvas','Calibration Grid'],
+  cs:{s:'年度绩效考核结果显示，高达82%的员工获评良好至优良等级，然而公司整体经营绩效却明显低于目标。',a:'这是典型的宽大误差加上KPI目标不具挑战性所导致。应双管齐下：依实际绩效基准与外部标竿重新检视目标值；并在最终评级定案前召开部门层级的校准会议。'},
+  q:[{q:'以下哪一段叙述，才能真正作为KPI来使用？',o:['全面改善客户服务品质','于第四季前，将客户平均响应时间从24小时缩短至8小时','对待顾客要更加用心关怀','持续不断地发展培育团队'],a:1,e:'真正的KPI须明确指出衡量指标、基准值、目标值与时间范围；仅有一项同时具备这四要素。'},{q:'召开校准会议的主要目的为何？',o:['共同制定下一年度的各项目标值','降低评分偏差，使各评估者之间的评分标准趋于一致','从中评选出年度杰出优秀员工','全面检讨现行的薪资结构制度'],a:1,e:'校准会议旨在校准所有评估者的评分标准，使跨部门的考核分数能公平地相互比较。'}]}}},
+{id:10,ic:'💰',tool:'sal',hue:'#155c3d',i18n:{
+ th:{t:'การบริหารค่าตอบแทน',en:'Compensation & Benefits Strategy',sum:'สร้างโครงสร้างเงินเดือนจากผลประเมินค่างาน กำหนดกระบอกเงินเดือน และบริหารการขึ้นเงินเดือนด้วย Compa-ratio',tags:['Salary Structure','Compa-ratio','Pay Mix'],
+  keys:[{h:'ความเป็นธรรมสามด้าน',d:'Internal Equity เทียบกันภายในด้วยค่างาน, External Competitiveness เทียบตลาดด้วยผลสำรวจค่าจ้าง, Individual Equity เทียบกันตามผลงานและความสามารถ ทั้งสามต้องสมดุลกัน'},{h:'องค์ประกอบของกระบอกเงินเดือน',d:'Midpoint คือค่ากลางที่สะท้อนราคาตลาดของระดับนั้น, Range Spread คือความกว้างจาก min ถึง max, Midpoint Progression คือระยะห่างระหว่างค่ากลางของแต่ละระดับ ระดับสูงมักมีกระบอกกว้างกว่าระดับล่าง'},{h:'Compa-ratio',d:'เงินเดือนปัจจุบัน ÷ ค่ากลางของกระบอก ค่าที่ต่ำกว่า 0.80 แปลว่ายังใหม่หรือต่ำกว่าตลาด ค่าสูงกว่า 1.20 แปลว่าใกล้เพดาน ควรพิจารณาการเติบโตด้วยวิธีอื่นแทนการขึ้นเงินเดือนตามปกติ'},{h:'Pay Mix',d:'สัดส่วนระหว่างเงินเดือนคงที่ ผลตอบแทนผันแปร และสวัสดิการ ตำแหน่งขายและตำแหน่งบริหารมักมีสัดส่วนผันแปรสูงกว่า เพื่อผูกกับผลลัพธ์'}],
+  tools:['Salary Structure Builder','Compa-ratio Analyzer','Merit Increase Matrix'],
+  cs:{s:'พนักงานอาวุโสคนหนึ่งเงินเดือนสูงกว่าเพดานของระดับตัวเองแล้ว แต่ผลงานยังดีมากและหัวหน้าขอขึ้นเงินเดือนให้',a:'กรณี Red Circle ไม่ควรขึ้นเงินเดือนเข้าฐานเพราะจะทำให้โครงสร้างเสีย ทางเลือกที่ใช้กันคือจ่ายเป็นเงินก้อนแบบ lump sum ที่ไม่เข้าฐาน หรือถ้าขอบเขตงานขยายจริงให้ประเมินค่างานใหม่เพื่อเลื่อนระดับ'},
+  q:[{q:'พนักงานมีเงินเดือน 42,000 บาท ค่ากลางของกระบอกคือ 35,000 บาท Compa-ratio เท่ากับเท่าใด',o:['0.83','1.20','1.07','0.75'],a:1,e:'42,000 ÷ 35,000 = 1.20 หมายความว่าอยู่สูงกว่าค่ากลาง 20% ใกล้เพดานของกระบอก'},{q:'Internal Equity ในการบริหารค่าตอบแทนอาศัยเครื่องมือใดเป็นหลัก',o:['ผลสำรวจค่าจ้างในตลาด','ผลการประเมินค่างาน','ผลประเมินการปฏิบัติงานรายบุคคล','อายุงานของพนักงาน'],a:1,e:'ความเป็นธรรมภายในตั้งอยู่บนค่างานที่ประเมินด้วยเกณฑ์เดียวกัน ส่วนผลสำรวจตลาดใช้กับ External Competitiveness'}]},
+ en:{t:'Compensation and Benefits Strategy',en:'',sum:'Build a salary structure from job evaluation results, set salary ranges, and manage increases using Compa-ratio.',tags:['Salary Structure','Compa-ratio','Pay Mix'],
+  keys:[{h:'Three dimensions of fairness',d:'Internal Equity compares jobs using evaluation scores; External Competitiveness compares against the market; Individual Equity compares people on performance and ability. All three must balance.'},{h:'Parts of a salary range',d:'Midpoint is the market-anchored center of a grade; Range Spread is min-to-max width; Midpoint Progression is the gap between consecutive midpoints. Higher grades usually have wider ranges.'},{h:'Compa-ratio',d:'Current salary ÷ range midpoint. Below 0.80 suggests new or under market; above 1.20 suggests near the ceiling, where growth should be handled differently.'},{h:'Pay mix',d:'The ratio between fixed salary, variable pay, and benefits. Sales and executive roles carry a higher variable share to tie pay to results.'}],
+  tools:['Salary Structure Builder','Compa-ratio Analyzer','Merit Increase Matrix'],
+  cs:{s:'A senior employee salary is already above the ceiling of their grade, but performance remains excellent and the supervisor requests another increase.',a:'A Red Circle case — increasing base pay would damage the structure. Common practice is a lump-sum payment outside base salary, or re-evaluating the job if scope genuinely expanded.'},
+  q:[{q:'An employee earns 42,000, and the range midpoint is 35,000. What is the Compa-ratio?',o:['0.83','1.20','1.07','0.75'],a:1,e:'42,000 ÷ 35,000 = 1.20, meaning the salary is 20% above midpoint — close to the range ceiling.'},{q:'Which tool is Internal Equity mainly based on?',o:['Market salary surveys','Job evaluation results','Individual performance appraisal results','Employee tenure'],a:1,e:'Internal fairness is based on job value scored with a consistent method; market surveys serve External Competitiveness.'}]},
+ zh:{t:'薪酬福利策略管理',en:'',sum:'依职务评价结果建构薪资结构，设定合理薪幅，并运用薪酬比率管理各项调薪作业。',tags:['Salary Structure','Compa-ratio','Pay Mix'],
+  keys:[{h:'薪酬公平的三大面向',d:'内部公平性运用职务评价分数在组织内部比较；外部竞争力依薪资调查与市场行情比较；个人公平性则依绩效与能力比较。三者之间必须维持平衡。'},{h:'薪幅结构的组成要素',d:'中位数是依市场行情定锚、代表该职等的中心值；薪幅宽度指最低值到最高值的幅度；中位数级距则是相邻职等中位数之间的差距。职等越高，薪幅通常越宽。'},{h:'薪酬比率',d:'目前薪资除以薪幅中位数。低于0.80通常代表到职未久或薪资低于市场；高于1.20则代表已逼近上限，应以不同于常规调薪的方式处理成长需求。'},{h:'薪酬组合',d:'固定薪资、变动薪酬与各项福利三者之间的配置比例。业务与高阶管理职位通常配置较高比例的变动薪酬，以将所得与绩效紧密连结。'}],
+  tools:['Salary Structure Builder','Compa-ratio Analyzer','Merit Increase Matrix'],
+  cs:{s:'某位资深员工的薪资早已超过其职等的薪幅上限，但绩效依然优异，主管再次提出为其调薪的请求。',a:'此即典型的「红圈」案例——继续调升底薪势必破坏薪资结构。常见做法是发放不计入底薪的一次性奖金；或若职责范围确实扩大，则重新进行职务评价作为晋升职等的依据。'},
+  q:[{q:'某位员工月薪为42,000，其职等薪幅中位数为35,000，其薪酬比率为多少？',o:['0.83','1.20','1.07','0.75'],a:1,e:'42,000 除以 35,000 等于 1.20，代表薪资高出中位数20%，已逼近该薪幅上限。'},{q:'薪酬管理中的内部公平性，主要依据哪一项工具作为判断基础？',o:['外部市场薪资调查报告','职务评价所得出的结果','个人年度绩效考核结果','员工在公司服务的年资'],a:1,e:'内部公平性建立在以一致标准所评估的职位价值之上；市场调查报告则用于评估外部竞争力。'}]}}},
+{id:11,ic:'🔮',tool:'met',hue:'#4a2d6b',i18n:{
+ th:{t:'HR Analytics และการนำการเปลี่ยนแปลง',en:'HR Analytics, Digital HR & Change',sum:'ยกระดับจากการรายงานย้อนหลังสู่การวิเคราะห์เชิงทำนาย และนำระบบใหม่ให้เกิดการยอมรับจริง',tags:['Predictive Analytics','ADKAR','Kotter'],
+  keys:[{h:'สี่ระดับของการวิเคราะห์',d:'Descriptive เกิดอะไรขึ้น, Diagnostic ทำไมจึงเกิด, Predictive จะเกิดอะไรต่อ, Prescriptive ควรทำอะไร องค์กรส่วนใหญ่ติดอยู่ที่ระดับแรกเพราะรายงานแต่ตัวเลขสถิติรายเดือน'},{h:'ตัวชี้วัดที่ผู้บริหารสนใจ',d:'Revenue per Employee, Human Capital ROI, Turnover Cost, Absence Rate และ Internal Fill Rate การนำเสนอควรแปลงเป็นผลกระทบทางการเงินเสมอ'},{h:'ADKAR',d:'การเปลี่ยนแปลงระดับบุคคลต้องผ่านห้าขั้น ตระหนัก ปรารถนา มีความรู้ มีความสามารถ และได้รับการเสริมแรง ถ้าโครงการล้มเหลวให้วินิจฉัยว่าคนติดอยู่ที่ขั้นใด แล้วแก้ที่ขั้นนั้น'},{h:'ความเสี่ยงของ Digital HR',d:'ระบบใหม่ล้มเหลวเพราะข้อมูลตั้งต้นไม่สะอาด กระบวนการเดิมไม่ถูกออกแบบใหม่ก่อนนำระบบมาใช้ และไม่มีเจ้าของข้อมูลที่ชัดเจน เทคโนโลยีไม่แก้ปัญหากระบวนการที่ผิดอยู่แล้ว'}],
+  tools:['HR Metrics Dashboard','ADKAR Assessment','Data Quality Checklist'],
+  cs:{s:'องค์กรลงทุนระบบ HRIS ใหม่ ผ่านไปหนึ่งปีหัวหน้างานยังส่งใบลาเป็นกระดาษเหมือนเดิม',a:'วินิจฉัยด้วย ADKAR มักพบว่าติดที่ Desire และ Reinforcement คือรู้ว่ามีระบบและใช้เป็น แต่ไม่มีแรงจูงใจให้เปลี่ยน ทางแก้คือปิดช่องทางกระดาษอย่างมีกำหนดเวลา ให้ผู้บริหารระดับสูงใช้ระบบเป็นตัวอย่าง และผูกอัตราการใช้ระบบเข้ากับ KPI ของหัวหน้าฝ่าย'},
+  q:[{q:'การวิเคราะห์ที่ตอบคำถามว่าพนักงานกลุ่มใดมีแนวโน้มจะลาออกในหกเดือนข้างหน้า จัดอยู่ในระดับใด',o:['Descriptive','Diagnostic','Predictive','Prescriptive'],a:2,e:'การคาดการณ์เหตุการณ์ในอนาคตคือ Predictive Analytics ส่วน Prescriptive จะไปไกลถึงการเสนอว่าควรทำอะไร'},{q:'พนักงานรู้ว่ามีระบบใหม่และใช้เป็น แต่ยังไม่ยอมเปลี่ยนพฤติกรรม ตามโมเดล ADKAR ควรแก้ที่ขั้นใดเป็นอันดับแรก',o:['Awareness','Desire','Knowledge','Ability'],a:1,e:'เมื่อมีทั้งความรู้และความสามารถแล้วแต่ยังไม่เปลี่ยน แสดงว่าขาดแรงจูงใจหรือความปรารถนาที่จะเปลี่ยน'}]},
+ en:{t:'HR Analytics, Digital HR and Change Management',en:'',sum:'Move from backward-looking reporting to predictive analytics, and lead new systems to real adoption.',tags:['Predictive Analytics','ADKAR','Kotter'],
+  keys:[{h:'Four levels of analytics',d:'Descriptive — what happened; Diagnostic — why; Predictive — what will happen next; Prescriptive — what should be done. Most organizations stay at the first level with monthly statistics.'},{h:'Metrics executives care about',d:'Revenue per Employee, Human Capital ROI, Turnover Cost, Absence Rate, and Internal Fill Rate. Always translate them into financial impact.'},{h:'ADKAR',d:'Individual change moves through Awareness, Desire, Knowledge, Ability, and Reinforcement. If a project stalls, diagnose which stage people are stuck at.'},{h:'Risks of digital HR',d:'New systems fail because starting data is dirty, old processes are not redesigned first, and there is no clear data owner. Technology cannot fix a broken process.'}],
+  tools:['HR Metrics Dashboard','ADKAR Assessment','Data Quality Checklist'],
+  cs:{s:'An organization invested in a new HRIS. A year later, supervisors are still submitting leave forms on paper.',a:'ADKAR usually finds the block at Desire and Reinforcement — people know the system and can use it, but have no motivation. Set a firm cutoff for paper, have leaders visibly use the system, and tie usage to department heads KPIs.'},
+  q:[{q:'Analysis that answers which employee groups are likely to resign in six months belongs to which level?',o:['Descriptive','Diagnostic','Predictive','Prescriptive'],a:2,e:'Forecasting a future event is Predictive Analytics; Prescriptive goes further to recommend action.'},{q:'Employees know a new system and can use it, but will not change behavior. Under ADKAR, which stage comes first?',o:['Awareness','Desire','Knowledge','Ability'],a:1,e:'If knowledge and ability exist but behavior has not changed, the missing piece is motivation — the Desire stage.'}]},
+ zh:{t:'人力资源分析、数字化人资与变革管理',en:'',sum:'从回顾式历史报表提升至预测性分析，并有效领导变革，使新系统真正被组织接纳采用。',tags:['Predictive Analytics','ADKAR','Kotter'],
+  keys:[{h:'分析的四个层次',d:'描述性分析回答「发生了什么」；诊断性分析探究「为何发生」；预测性分析推估「接下来将发生什么」；处方性分析则建议「应采取何种行动」。多数组织停滞于第一层次。'},{h:'高阶管理者真正关注的指标',d:'人均创造营收、人力资本投资报酬率、离职总成本、缺勤率，以及内部职位递补率。汇报时务必一律转化为具体财务影响加以呈现。'},{h:'ADKAR变革模型',d:'个人层次的变革须依序历经认知、渴望、知识、能力与强化五个阶段。若专案推行受阻，应诊断员工卡在哪一阶段，再针对该阶段对症下药。'},{h:'数字化人资的潜在风险',d:'新系统推行失败，往往因初始数据不干净、既有流程未经重新设计，以及缺乏明确的数据权责负责人。科技终究无法修复原本就已失能的流程。'}],
+  tools:['HR Metrics Dashboard','ADKAR Assessment','Data Quality Checklist'],
+  cs:{s:'某组织斥资建置全新的人力资源信息系统，然而一年过去，各级主管仍持续以纸本表单办理请假申请。',a:'运用ADKAR诊断，通常发现症结卡在「渴望」与「强化」阶段——大家都知道系统存在也懂得操作，却缺乏改变的动机。应设定明确期限关闭纸本渠道，由高阶主管带头示范使用。'},
+  q:[{q:'能够回答「哪些员工族群在未来六个月内可能离职」的分析，属于哪一个层次？',o:['描述性分析','诊断性分析','预测性分析','处方性分析'],a:2,e:'针对未来事件进行预测推估，属于预测性分析；处方性分析则更进一步建议应采取何种具体行动。'},{q:'员工明知有新系统也懂得操作，却依然不愿改变行为习惯。依ADKAR模型，应优先处理哪一阶段？',o:['认知','渴望','知识','能力'],a:1,e:'当知识与能力皆已具备，行为却仍未改变时，即代表所欠缺的正是改变的动机与渴望。'}]}}}
+];
+
+/*══ 4. STATE ══*/
+let L=localStorage.getItem('shrm_lang')||'th',curCh=0,graded=false,answers={},lastPer=null,certName='',certRef=null,activeTool='kpi',query='';
+const seen=new Set(JSON.parse(localStorage.getItem('shrm_seen')||'[]'));
+const QTOTAL=CH.reduce((s,c)=>s+c.i18n.th.q.length,0);
+const $=id=>document.getElementById(id);
+const T=()=>UI[L],D=i=>CH[i].i18n[L],TL=k=>TU[L][k];
+const num=v=>{const n=parseFloat(v);return isNaN(n)?0:n};
+const fmt=(n,d=0)=>n.toLocaleString(UI[L].locale,{minimumFractionDigits:d,maximumFractionDigits:d});
+
+/*══ 4b. TOOLS / QUIZ FULLSCREEN OVERLAYS ══*/
+function openToolsModal(){$('toolsOv').classList.add('on');document.body.style.overflow='hidden';$('side').classList.remove('open')}
+function closeToolsModal(){$('toolsOv').classList.remove('on');document.body.style.overflow=''}
+function openQuizModal(scrollId){
+  $('quizOv').classList.add('on');document.body.style.overflow='hidden';$('side').classList.remove('open');
+  if(scrollId)setTimeout(()=>{const el=$(scrollId);if(el)el.scrollIntoView({behavior:'smooth',block:'start'})},60);
+}
+function closeQuizModal(){$('quizOv').classList.remove('on');document.body.style.overflow=''}
+
+/*══ 5. FONT SIZE ══*/
+let FS=parseInt(localStorage.getItem('shrm_fs')||'0');
+function applyFS(){document.documentElement.style.fontSize=FS===0?'':Math.min(Math.max(16+FS*1.5,13),25)+'px'}
+function fontSize(d){FS=Math.min(Math.max(FS+d,-2),4);localStorage.setItem('shrm_fs',FS);applyFS()}
+
+/*══ 6. LANGUAGE ══*/
+function setLang(l){
+  L=l;localStorage.setItem('shrm_lang',l);
+  document.documentElement.lang=l==='zh'?'zh-CN':l;
+  document.querySelectorAll('#langbar button').forEach(b=>b.classList.toggle('on',b.dataset.l===l));
+  document.querySelectorAll('[data-k]').forEach(el=>{const v=T()[el.dataset.k];if(v!==undefined)el.textContent=v});
+  $('srch').placeholder=T().searchPh;
+  renderSide();render();buildTools();drawQ();
+  if(lastPer)buildReport(lastPer);
+  else{$('reportBox').innerHTML=`<p class="mut">${T().repEmpty}</p>`;$('certArea').innerHTML=`<p class="mut">${T().certEmpty}</p>`}
+  if($('ov').classList.contains('on'))openM(curCh);
+}
+
+/*══ 7. SIDEBAR ══*/
+function renderSide(){
+  $('lecList').innerHTML=CH.map((c,i)=>`
+    <div class="lec${i===curCh?' active':''}" id="lec${i}" onclick="openM(${i})">
+      <input type="checkbox" ${seen.has(c.id)?'checked':''} onclick="event.stopPropagation();toggleSeen(${c.id})">
+      <span class="lec-t"><b>${T().chWord(c.id)} · ${D(i).t}</b><small>${T().lecMeta}</small></span>
+    </div>`).join('');
+  const n=seen.size,pct=Math.round(n/CH.length*100);
+  $('pbar').style.width=pct+'%';$('pTxt').textContent=`${n} / ${CH.length}`;$('pPct').textContent=pct+'%';
+}
+function toggleSeen(id){seen.has(id)?seen.delete(id):seen.add(id);localStorage.setItem('shrm_seen',JSON.stringify([...seen]));renderSide();render()}
+
+/*══ 8. COURSE CARDS ══*/
+function render(){
+  const q=query.trim().toLowerCase();
+  const list=CH.map((c,i)=>({c,i})).filter(({c,i})=>{
+    if(!q)return true;
+    const d=D(i);
+    return (d.t+d.sum+d.tags.join(' ')+d.tools.join(' ')).toLowerCase().includes(q);
+  });
+  if(!list.length){$('grid').innerHTML=`<p class="mut">${T().noResult}</p>`;return}
+  $('grid').innerHTML=list.map(({c,i})=>{const d=D(i);return `
+    <button class="card${seen.has(c.id)?' done':''}" onclick="openM(${i})">
+      <div class="thumb" style="background:linear-gradient(135deg,${c.hue},#1c1d1f)">
+        <span class="cn">${T().chWord(c.id)}</span>${c.ic}
+      </div>
+      <div class="cbody">
+        <h3>${d.t}</h3>
+        ${d.en?`<span class="sub">${d.en}</span>`:''}
+        <p class="dsc">${d.sum}</p>
+        <div class="crow"><span class="sc">4.8</span><span class="stars" style="color:#e59819">★★★★★</span><span class="mut">(${180+c.id*37})</span></div>
+        <div class="tags">${d.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+      </div>
+    </button>`}).join('');
+}
+function doSearch(){query=$('srch').value;render();$('chapters').scrollIntoView({behavior:'smooth'})}
+
+/*══ 9. LECTURE MODAL ══*/
+function openM(i){
+  curCh=i;seen.add(CH[i].id);localStorage.setItem('shrm_seen',JSON.stringify([...seen]));renderSide();render();
+  const c=CH[i],d=D(i);
+  $('modal').innerHTML=`<div class="mhead"><span class="ic">${c.ic}</span>
+    <div><h3>${T().chWord(c.id)} · ${d.t}</h3>${d.en?`<small>${d.en}</small>`:''}</div>
+    <button class="x" onclick="closeM()">×</button></div>
+    <div class="tabs">
+      <button class="tab on" onclick="mTab(0,this)">${T().tabKey}</button>
+      <button class="tab" onclick="mTab(1,this)">${T().tabTool}</button>
+      <button class="tab" onclick="mTab(2,this)">${T().tabCase}</button>
+      <button class="tab" onclick="mTab(3,this)">${T().tabQuiz}</button>
+    </div><div class="mbody" id="mBody"></div>`;
+  mTab(0);$('ov').classList.add('on');document.body.style.overflow='hidden';$('side').classList.remove('open');
+}
+function mTab(n,el){
+  if(el){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));el.classList.add('on')}
+  const d=D(curCh),c=CH[curCh],b=$('mBody');
+  if(n===0)b.innerHTML=d.keys.map((k,x)=>`<div class="kbox"><h4>${x+1}. ${k.h}</h4><p>${k.d}</p></div>`).join('');
+  if(n===1){
+    const tn=TL('nav')[TOOLS.indexOf(c.tool)];
+    b.innerHTML=`<p class="mut" style="font-size:.86rem">${T().toolIntro}</p><ul class="clean">${d.tools.map(t=>`<li>${t}</li>`).join('')}</ul>
+      <div class="alert" style="margin-top:16px"><h4>${T().linked}</h4><p style="margin:0;font-size:.87rem">${tn}</p></div>
+      <p style="margin-top:14px"><button class="btn pp" onclick="gotoChTool(${curCh})">${T().gotoTool}</button></p>`;
+  }
+  if(n===2)b.innerHTML=`<div class="case"><span class="lb">${T().situation}</span><p>${d.cs.s}</p><span class="lb">${T().approach}</span><p style="margin:0">${d.cs.a}</p></div>`;
+  if(n===3)b.innerHTML=d.q.map((q,qi)=>`<div class="q"><div class="qt">${q.q}</div>
+    ${q.o.map((o,oi)=>`<button class="opt" onclick="tryQ(this,${oi},${q.a},'e${curCh}_${qi}')"><i></i><span>${o}</span></button>`).join('')}
+    <div class="exp" id="e${curCh}_${qi}">${T().answerIs}${q.o[q.a]} — ${q.e}</div></div>`).join('');
+}
+function tryQ(el,p,a,id){
+  el.parentElement.querySelectorAll('.opt').forEach((b,i)=>{b.disabled=true;if(i===a)b.classList.add('ok')});
+  if(p!==a)el.classList.add('no');
+  $(id).classList.add('on');
+}
+function closeM(){$('ov').classList.remove('on');document.body.style.overflow=''}
+function gotoChTool(i){
+  const id=CH[i].tool;closeM();
+  openToolsModal();
+  const btn=document.querySelectorAll('.tnav button')[TOOLS.indexOf(id)];
+  if(btn)showTool(id,btn);
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeM();closeToolsModal();closeQuizModal()}});
+
+/*══ 10. TOOLS ══*/
+const TOOLS=['kpi','fte','je','sal','cmp','met','swot','fun','roi'];
+const TFN={kpi:tKPI,fte:tFTE,je:tJE,sal:tSAL,cmp:tCMP,met:tMET,swot:tSWOT,fun:tFUN,roi:tROI};
+function buildTools(){
+  $('tnav').innerHTML=TOOLS.map((id,i)=>`<button class="${id===activeTool?'on':''}" onclick="showTool('${id}',this)">${TL('nav')[i]}</button>`).join('');
+  $('panels').innerHTML=TOOLS.map(id=>`<div class="panel${id===activeTool?' on':''}" id="p_${id}"></div>`).join('');
+  TOOLS.forEach(id=>TFN[id]());
+  drawToolPager();
+}
+function showTool(id,el){
+  activeTool=id;
+  document.querySelectorAll('.tnav button').forEach(b=>b.classList.remove('on'));
+  if(el)el.classList.add('on');
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  $('p_'+id).classList.add('on');
+  drawToolPager();
+}
+function toolStep(dir){
+  closeToolsModal();
+  const ni=(curCh+dir+CH.length)%CH.length;
+  openM(ni);
+}
+function drawToolPager(){
+  const el=$('toolPager');if(!el)return;
+  el.innerHTML=`<button class="btn out sm" onclick="toolStep(-1)">${T().toolPrev}</button>
+    <span class="mut" style="font-size:.8rem">${T().toolPos(curCh+1,CH.length)}</span>
+    <button class="btn out sm" onclick="toolStep(1)">${T().toolNext}</button>`;
+}
+
+let kpiS=[{p:0,w:30,t:120,a:108},{p:1,w:25,t:90,a:93},{p:2,w:25,t:95,a:88},{p:3,w:20,t:40,a:44}];
+function tKPI(){
+  const u=TL('kpi');
+  $('p_kpi').innerHTML=`<h3>${u.t}</h3><p class="desc">${u.d}</p>
+  <table><thead><tr><th>${u.c[0]}</th><th>${u.c[1]}</th><th class="num">${u.c[2]}</th><th class="num">${u.c[3]}</th><th class="num">${u.c[4]}</th><th class="num">${u.c[5]}</th><th></th></tr></thead><tbody id="kpiBody"></tbody></table>
+  <p style="margin-top:12px"><button class="btn out sm" onclick="kpiAdd()">${u.add}</button></p><div class="out" id="kpiOut"></div>`;
+  kpiDraw();
+}
+function kpiDraw(){
+  const u=TL('kpi');
+  $('kpiBody').innerHTML=kpiS.map((r,i)=>{
+    const pc=r.t?r.a/r.t*100:0,nm=r.nm!==undefined?r.nm:(u.rows[i]||'');
+    return `<tr><td><select onchange="kpiSet(${i},'p',this.value)">${u.p.map((o,j)=>`<option value="${j}"${j===r.p?' selected':''}>${o}</option>`).join('')}</select></td>
+    <td><input type="text" value="${nm}" oninput="kpiSet(${i},'nm',this.value)"></td>
+    <td class="num"><input type="number" value="${r.w}" oninput="kpiSet(${i},'w',this.value)"></td>
+    <td class="num"><input type="number" value="${r.t}" oninput="kpiSet(${i},'t',this.value)"></td>
+    <td class="num"><input type="number" value="${r.a}" oninput="kpiSet(${i},'a',this.value)"></td>
+    <td class="num">${fmt(pc,1)}%</td><td><button class="row-del" onclick="kpiDel(${i})">✕</button></td></tr>`}).join('');
+  kpiCalc();
+}
+function kpiSet(i,k,v){kpiS[i][k]=k==='nm'?v:num(v);k==='nm'?kpiCalc():kpiDraw()}
+function kpiAdd(){kpiS.push({p:0,nm:'',w:0,t:100,a:0});kpiDraw()}
+function kpiDel(i){if(kpiS.length>1){kpiS.splice(i,1);kpiDraw()}}
+function kpiCalc(){
+  const u=TL('kpi'),ws=kpiS.reduce((s,r)=>s+r.w,0),sc=kpiS.reduce((s,r)=>s+(r.t?Math.min(r.a/r.t,1.2)*r.w:0),0);
+  let g=u.g[0],cls='r';
+  if(sc>=100){g=u.g[3];cls='g'}else if(sc>=90){g=u.g[2];cls='g'}else if(sc>=80){g=u.g[1];cls='y'}
+  $('kpiOut').innerHTML=`<div class="big">${fmt(sc,1)} ${u.unit}</div>
+    <p style="margin:6px 0 0">${u.ov} <span class="pill ${cls}">${g}</span>${ws!==100?`<span class="pill r" style="margin-left:6px">${u.warn(fmt(ws,0))}</span>`:''}</p>
+    <p class="mut" style="margin:10px 0 0;font-size:.82rem">${u.note}</p>`;
+}
+
+let fS={vol:180000,mn:6,day:248,hr:8,lv:18,ut:75,cur:12,at:15};
+function tFTE(){
+  const u=TL('fte');
+  $('p_fte').innerHTML=`<h3>${u.t}</h3><p class="desc">${u.d}</p><div class="fields">
+    ${['vol','mn','day','hr','lv','ut','cur','at'].map((k,i)=>`<div><label>${u.f[i]}</label><input type="number" id="f_${k}" value="${fS[k]}" oninput="fteCalc()"></div>`).join('')}
+  </div><div class="out" id="fteOut"></div>`;
+  fteCalc();
+}
+function fteCalc(){
+  const u=TL('fte');
+  ['vol','mn','day','hr','lv','ut','cur','at'].forEach(k=>fS[k]=num($('f_'+k).value));
+  const work=fS.vol*fS.mn/60,net=(fS.day-fS.lv)*fS.hr*(fS.ut/100),need=net>0?work/net:0,loss=fS.cur*(fS.at/100),sup=fS.cur-loss,gap=need-sup;
+  $('fteOut').innerHTML=`<div class="big">${fmt(need,1)} FTE</div>
+    <p style="margin:4px 0 14px" class="mut">${u.sub(fmt(work,0))}</p>
+    <table><tbody>
+    <tr><td>${u.r[0]}</td><td class="num">${fmt(net,0)} ${u.hr}</td></tr>
+    <tr><td>${u.r[1]}</td><td class="num">${fmt(fS.cur,0)} ${u.ppl}</td></tr>
+    <tr><td>${u.r[2]}</td><td class="num">${fmt(loss,1)} ${u.ppl}</td></tr>
+    <tr><td>${u.r[3]}</td><td class="num">${fmt(sup,1)} ${u.ppl}</td></tr>
+    <tr><td><b>${u.r[4]}</b></td><td class="num"><b>${gap>0?fmt(gap,1)+' '+u.pos:u.sur(fmt(Math.abs(gap),1))}</b></td></tr></tbody></table>
+    <p style="margin:12px 0 0">${gap>0?`<span class="pill y">${u.need(Math.ceil(gap))}</span>`:`<span class="pill g">${u.ok}</span>`}</p>`;
+}
+
+const JW=[25,20,20,15,12,8],GB=[[0,180],[181,300],[301,420],[421,540],[541,660],[661,780],[781,1000]];
+let jeS={title:null,lv:[3,3,3,3,3,3]};
+function tJE(){
+  const u=TL('je');
+  if(jeS.title===null)jeS.title=u.pd;
+  $('p_je').innerHTML=`<h3>${u.t}</h3><p class="desc">${u.d}</p>
+  <div style="margin-top:16px;max-width:360px"><label>${u.pl}</label><input type="text" id="je_t" value="${jeS.title}" oninput="jeS.title=this.value;jeCalc()"></div>
+  <table style="margin-top:16px"><thead><tr><th>${u.c[0]}</th><th class="num">${u.c[1]}</th><th style="width:170px">${u.c[2]}</th><th class="num">${u.c[3]}</th></tr></thead>
+  <tbody>${u.f.map((f,i)=>`<tr><td>${f}</td><td class="num">${JW[i]}</td>
+    <td><select onchange="jeS.lv[${i}]=+this.value;jeCalc()">${[1,2,3,4,5].map(v=>`<option value="${v}"${v===jeS.lv[i]?' selected':''}>${u.lv(v)}</option>`).join('')}</select></td>
+    <td class="num" id="jes_${i}">-</td></tr>`).join('')}</tbody></table><div class="out" id="jeOut"></div>`;
+  jeCalc();
+}
+function jeCalc(){
+  const u=TL('je');let tot=0;
+  JW.forEach((w,i)=>{const p=w*2*jeS.lv[i];tot+=p;const c=$('jes_'+i);if(c)c.textContent=fmt(p,0)});
+  let gi=GB.findIndex(b=>tot>=b[0]&&tot<=b[1]);if(gi<0)gi=GB.length-1;
+  $('jeOut').innerHTML=`<div class="big">${fmt(tot,0)} ${u.unit}</div>
+    <p style="margin:4px 0 0">${u.res(jeS.title||'-','G'+(gi+1),u.g[gi])}</p>
+    <p class="mut" style="margin:10px 0 0;font-size:.82rem">${u.note(GB[gi][0],GB[gi][1])}</p>`;
+}
+
+let sS={mid:18000,n:7,prog:22,sp:40,spi:5,chk:42000,chkg:4};
+function tSAL(){
+  const u=TL('sal');
+  $('p_sal').innerHTML=`<h3>${u.t}</h3><p class="desc">${u.d}</p><div class="fields">
+    ${['mid','n','prog','sp','spi','chk','chkg'].map((k,i)=>`<div><label>${u.f[i]}</label><input type="number" id="s_${k}" value="${sS[k]}" oninput="salCalc()"></div>`).join('')}
+  </div><table><thead><tr>${u.c.map((h,i)=>`<th${i?' class="num"':''}>${h}</th>`).join('')}</tr></thead><tbody id="salBody"></tbody></table><div class="out" id="salOut"></div>`;
+  salCalc();
+}
+function salCalc(){
+  const u=TL('sal');
+  ['mid','n','prog','sp','spi','chk','chkg'].forEach(k=>sS[k]=num($('s_'+k).value));
+  const n=Math.max(1,Math.min(15,sS.n)),prog=sS.prog/100,sp0=sS.sp/100,spi=sS.spi/100,rows=[];
+  for(let i=0;i<n;i++){const mid=sS.mid*Math.pow(1+prog,i),sp=sp0+spi*i,mn=mid/(1+sp/2),mx=mn*(1+sp);rows.push({g:i+1,mn,mid,mx,sp})}
+  $('salBody').innerHTML=rows.map(r=>`<tr><td>G${r.g}</td><td class="num">${fmt(r.mn)}</td><td class="num">${fmt(r.mid)}</td><td class="num">${fmt(r.mx)}</td><td class="num">${fmt(r.sp*100,0)}%</td></tr>`).join('');
+  const gi=Math.min(Math.max(1,sS.chkg),n)-1,r=rows[gi],cr=r.mid?sS.chk/r.mid:0;
+  let msg,cls;
+  if(cr<0.80){msg=u.lo;cls='r'}else if(cr<=1.20){msg=u.mid;cls='g'}else{msg=u.hi;cls='r'}
+  $('salOut').innerHTML=`<div class="big">Compa-ratio ${cr.toFixed(2)}</div>
+    <p style="margin:4px 0 0">${u.line(fmt(sS.chk),gi+1,fmt(r.mid))} <span class="pill ${cls}">${msg}</span></p>`;
+}
+
+let cS=[{r:4,a:2,c:3},{r:4,a:3,c:3},{r:3,a:1,c:2},{r:3,a:3,c:2}];
+function tCMP(){
+  const u=TL('cmp');
+  $('p_cmp').innerHTML=`<h3>${u.t}</h3><p class="desc">${u.d}</p>
+  <table><thead><tr><th>${u.c[0]}</th><th style="width:115px">${u.c[1]}</th><th style="width:115px">${u.c[2]}</th><th style="width:125px">${u.c[3]}</th><th class="num">${u.c[4]}</th><th class="num">${u.c[5]}</th><th></th></tr></thead><tbody id="cmpBody"></tbody></table>
+  <p style="margin-top:12px"><button class="btn out sm" onclick="cmpAdd()">${u.add}</button></p><div class="out" id="cmpOut"></div>`;
+  cmpDraw();
+}
+function cmpDraw(){
+  const u=TL('cmp'),lv=[1,2,3,4,5];
+  $('cmpBody').innerHTML=cS.map((r,i)=>{
+    const g=Math.max(0,r.r-r.a),p=g*r.c,nm=r.nm!==undefined?r.nm:(u.def[i]||'');
+    return `<tr><td><input type="text" value="${nm}" oninput="cmpSet(${i},'nm',this.value)"></td>
+    <td><select onchange="cmpSet(${i},'r',this.value)">${lv.map(v=>`<option value="${v}"${v===r.r?' selected':''}>${v}</option>`).join('')}</select></td>
+    <td><select onchange="cmpSet(${i},'a',this.value)">${lv.map(v=>`<option value="${v}"${v===r.a?' selected':''}>${v}</option>`).join('')}</select></td>
+    <td><select onchange="cmpSet(${i},'c',this.value)">${u.imp.map(v=>`<option value="${v[0]}"${v[0]===r.c?' selected':''}>${v[1]}</option>`).join('')}</select></td>
+    <td class="num">${g}</td><td class="num">${p}</td><td><button class="row-del" onclick="cmpDel(${i})">✕</button></td></tr>`}).join('');
+  cmpCalc();
+}
+function cmpSet(i,k,v){cS[i][k]=k==='nm'?v:num(v);k==='nm'?cmpCalc():cmpDraw()}
+function cmpAdd(){cS.push({nm:'',r:3,a:1,c:2});cmpDraw()}
+function cmpDel(i){if(cS.length>1){cS.splice(i,1);cmpDraw()}}
+function cmpCalc(){
+  const u=TL('cmp');
+  const list=cS.map((r,i)=>({n:r.nm!==undefined?r.nm:(u.def[i]||''),gap:Math.max(0,r.r-r.a),pr:Math.max(0,r.r-r.a)*r.c})).sort((a,b)=>b.pr-a.pr);
+  const urg=list.filter(x=>x.gap>=2);
+  const plan=x=>x.gap>=3?u.pl[0]:x.gap===2?u.pl[1]:x.gap===1?u.pl[2]:u.pl[3];
+  $('cmpOut').innerHTML=`<div class="big">${u.urg(urg.length)}</div>
+    <p class="mut" style="margin:4px 0 14px">${u.urgNote}</p>
+    <table><thead><tr><th>${u.c2[0]}</th><th class="num">${u.c2[1]}</th><th>${u.c2[2]}</th></tr></thead>
+    <tbody>${list.map(x=>`<tr><td>${x.n}</td><td class="num">${x.gap}</td><td class="mut">${plan(x)}</td></tr>`).join('')}</tbody></table>`;
+}
+
+let mS={hc:320,sep:58,rev:480000000,cost:96000000,rep:65000,int:35};
+function tMET(){
+  const u=TL('met');
+  $('p_met').innerHTML=`<h3>${u.t}</h3><p class="desc">${u.d}</p><div class="fields">
+    ${['hc','sep','rev','cost','rep','int'].map((k,i)=>`<div><label>${u.f[i]}</label><input type="number" id="m_${k}" value="${mS[k]}" oninput="metCalc()"></div>`).join('')}
+  </div><div class="out" id="metOut"></div>`;
+  metCalc();
+}
+function metCalc(){
+  const u=TL('met');
+  ['hc','sep','rev','cost','rep','int'].forEach(k=>mS[k]=num($('m_'+k).value));
+  const to=mS.hc?mS.sep/mS.hc*100:0,rpe=mS.hc?mS.rev/mS.hc:0,roi=mS.cost?((mS.rev-mS.cost)/mS.cost):0,tc=mS.sep*mS.rep,pct=mS.rev?tc/mS.rev*100:0;
+  let cls='g',lbl=u.ok;
+  if(to>=25){cls='r';lbl=u.hi}else if(to>=15){cls='y';lbl=u.md}
+  $('metOut').innerHTML=`<div class="big">${fmt(to,1)}%</div>
+    <p style="margin:4px 0 14px">${u.sub} <span class="pill ${cls}">${lbl}</span></p>
+    <table><tbody>
+    <tr><td>${u.r[0]}</td><td class="num"><b>${fmt(tc)}</b></td></tr>
+    <tr><td>${u.r[1]}</td><td class="num">${fmt(pct,2)}%</td></tr>
+    <tr><td>${u.r[2]}</td><td class="num">${fmt(rpe)}</td></tr>
+    <tr><td>${u.r[3]}</td><td class="num">${roi.toFixed(2)}x</td></tr>
+    <tr><td>${u.r[4]}</td><td class="num">${fmt(mS.int,0)}%</td></tr></tbody></table>
+    <p class="mut" style="margin:12px 0 0;font-size:.82rem">${u.note(fmt(mS.hc*0.05*mS.rep))}</p>`;
+}
+
+let wS={s:['','','','',''],w:['','','','',''],o:['','','','',''],t:['','','','','']};
+function tSWOT(){
+  const u=TL('swot');
+  $('p_swot').innerHTML=`<h3>${u.t}</h3><p class="desc">${u.d}</p><div class="fields">
+    ${['s','w','o','t'].map((k,i)=>`<div><label>${u.f[i]}</label>
+      ${[0,1,2,3,4].map(n=>`<div style="display:flex;gap:6px;align-items:center;margin-bottom:6px">
+        <span class="mut" style="width:14px;flex-shrink:0;font-size:.72rem">${n+1}.</span>
+        <input type="text" id="w_${k}_${n}" value="${(wS[k][n]||'').replace(/"/g,'&quot;')}" placeholder="${n===0?u.ph[i]:''}" oninput="swotCalc()" style="flex:1">
+      </div>`).join('')}
+    </div>`).join('')}
+  </div><div class="out" id="swotOut"></div>`;
+  swotCalc();
+}
+function swotCalc(){
+  const u=TL('swot');
+  const vals={};
+  ['s','w','o','t'].forEach(k=>{
+    vals[k]=[0,1,2,3,4].map(n=>{const el=$('w_'+k+'_'+n);return el?el.value.trim():''}).filter(v=>v);
+    wS[k]=[0,1,2,3,4].map(n=>{const el=$('w_'+k+'_'+n);return el?el.value:''});
+  });
+  const out=$('swotOut');
+  if(!vals.s.length||!vals.w.length||!vals.o.length||!vals.t.length){out.innerHTML=`<p class="mut" style="margin:0">${u.empty}</p>`;return}
+  const S=vals.s.join('; '),W=vals.w.join('; '),O=vals.o.join('; '),Tt=vals.t.join('; ');
+  const ext=['ตลาด','คู่แข่ง','กฎหมาย','เศรษฐกิจ','market','competitor','economy','law','市场','竞争','法规','经济'];
+  const bad=ext.some(x=>S.toLowerCase().includes(x)||W.toLowerCase().includes(x));
+  out.innerHTML=`
+    <div class="kbox" style="border-left:4px solid #1e6055"><h4>${u.so}</h4><p>${u.soD(S,O)}</p></div>
+    <div class="kbox" style="border-left:4px solid #264d8c"><h4>${u.st}</h4><p>${u.stD(S,Tt)}</p></div>
+    <div class="kbox" style="border-left:4px solid #8a6116"><h4>${u.wo}</h4><p>${u.woD(W,O)}</p></div>
+    <div class="kbox" style="border-left:4px solid #b32d0f;margin-bottom:0"><h4>${u.wt}</h4><p>${u.wtD(W,Tt)}</p></div>
+    ${bad?`<p class="mut" style="margin:12px 0 0;font-size:.82rem">${u.warnIn}</p>`:''}`;
+}
+
+let nS={a:240,b:96,c:32,d:12,e:5};
+function tFUN(){
+  const u=TL('fun');
+  $('p_fun').innerHTML=`<h3>${u.t}</h3><p class="desc">${u.d}</p><div class="fields">
+    ${['a','b','c','d','e'].map((k,i)=>`<div><label>${u.f[i]}</label><input type="number" id="n_${k}" value="${nS[k]}" oninput="funCalc()"></div>`).join('')}
+  </div><table><thead><tr><th>${u.c[0]}</th><th class="num">${u.c[1]}</th><th class="num">${u.c[2]}</th></tr></thead><tbody id="funBody"></tbody></table><div class="out" id="funOut"></div>`;
+  funCalc();
+}
+function funCalc(){
+  const u=TL('fun');
+  ['a','b','c','d','e'].forEach(k=>nS[k]=num($('n_'+k).value));
+  const v=[nS.a,nS.b,nS.c,nS.d,nS.e],rates=[];
+  for(let i=1;i<v.length;i++)rates.push(v[i-1]>0?v[i]/v[i-1]*100:0);
+  $('funBody').innerHTML=v.map((x,i)=>`<tr><td>${u.stage[i]}</td><td class="num">${fmt(x,0)}</td><td class="num">${i===0?'—':fmt(rates[i-1],1)+'%'}</td></tr>`).join('');
+  const overall=nS.a>0?nS.e/nS.a*100:0;
+  let mi=0;rates.forEach((r,i)=>{if(r<rates[mi])mi=i});
+  const keys=['scr','int','off','acc'],cls=overall>=3?'g':overall>=1.5?'y':'r';
+  $('funOut').innerHTML=`<div class="big">${fmt(overall,2)}%</div>
+    <p style="margin:4px 0 14px">${u.overall} <span class="pill ${cls}">${fmt(rates[mi],1)}%</span></p>
+    <div class="kbox" style="border-left:4px solid #b32d0f;margin:0"><h4>${u.bn} ${u.stage[mi+1]}</h4><p>${u.diag[keys[mi]]}</p></div>`;
+}
+
+let rS={n:25,val:42000,iso:70,conf:80,c1:180000,c2:60000,c3:45000,c4:210000,c5:35000};
+function tROI(){
+  const u=TL('roi');
+  $('p_roi').innerHTML=`<h3>${u.t}</h3><p class="desc">${u.d}</p>
+  <div class="subh">${u.secB}</div>
+  <div class="fields">${['n','val','iso','conf'].map((k,i)=>`<div><label>${u.b[i]}</label><input type="number" id="r_${k}" value="${rS[k]}" oninput="roiCalc()"></div>`).join('')}</div>
+  <div class="subh">${u.secC}</div>
+  <div class="fields">${['c1','c2','c3','c4','c5'].map((k,i)=>`<div><label>${u.c[i]}</label><input type="number" id="r_${k}" value="${rS[k]}" oninput="roiCalc()"></div>`).join('')}</div>
+  <div class="out" id="roiOut"></div>`;
+  roiCalc();
+}
+function roiCalc(){
+  const u=TL('roi');
+  ['n','val','iso','conf','c1','c2','c3','c4','c5'].forEach(k=>rS[k]=num($('r_'+k).value));
+  const gross=rS.n*rS.val,net=gross*(rS.iso/100)*(rS.conf/100),cost=rS.c1+rS.c2+rS.c3+rS.c4+rS.c5;
+  const gain=net-cost,roi=cost>0?gain/cost*100:0,bcr=cost>0?net/cost:0,pay=net>0?cost/(net/12):0;
+  let cls='r',lbl=u.lo;
+  if(roi>=100){cls='g';lbl=u.hi}else if(roi>=0){cls='y';lbl=u.md}
+  $('roiOut').innerHTML=`<div class="big">${fmt(roi,1)}%</div>
+    <p style="margin:4px 0 14px">${u.lbl} <span class="pill ${cls}">${lbl}</span></p>
+    <table><tbody>
+    <tr><td>${u.r[0]}</td><td class="num">${fmt(gross)}</td></tr>
+    <tr><td>${u.r[1]}</td><td class="num">${fmt(net)}</td></tr>
+    <tr><td>${u.r[2]}</td><td class="num">${fmt(cost)}</td></tr>
+    <tr><td><b>${u.r[3]}</b></td><td class="num"><b style="color:${gain>=0?'#1e6055':'#b32d0f'}">${fmt(gain)}</b></td></tr>
+    <tr><td>${u.r[4]}</td><td class="num">${bcr.toFixed(2)} : 1</td></tr>
+    <tr><td>${u.r[5]}</td><td class="num">${pay>0&&pay<=120?fmt(pay,1)+' '+u.month:u.never}</td></tr></tbody></table>
+    <p class="mut" style="margin:12px 0 0;font-size:.82rem">${u.note}</p>`;
+}
+
+/*══ 11. QUIZ ══*/
+function drawQ(){
+  let n=0;
+  $('quizBox').innerHTML=CH.map((c,ci)=>D(ci).q.map((q,qi)=>{
+    n++;const key=ci+'-'+qi,pk=answers[key];
+    const opts=q.o.map((o,oi)=>{
+      let cl='';
+      if(graded&&pk!==undefined)cl=oi===q.a?' ok':(oi===pk?' no':'');
+      else if(pk===oi)cl=' pick';
+      return `<button class="opt${cl}" id="o_${key}_${oi}"${graded?' disabled':''} onclick="pick('${key}',${oi})"><i></i><span>${o}</span></button>`}).join('');
+    const on=graded&&pk!==undefined;
+    const ex=pk===q.a?T().correct+q.e:T().answerIs+q.o[q.a]+' — '+q.e;
+    return `<div class="q" id="q_${key}"><div class="qt">${T().qNo(n)} ${q.q}<small>${T().chWord(c.id)} · ${D(ci).t}</small></div>
+      ${opts}<div class="exp${on?' on':''}" id="x_${key}">${on?ex:''}</div></div>`}).join('')).join('');
+  updStatus();
+}
+function pick(key,oi){
+  if(graded)return;
+  answers[key]=oi;
+  const [ci,qi]=key.split('-').map(Number);
+  D(ci).q[qi].o.forEach((_,i)=>$(`o_${key}_${i}`).classList.toggle('pick',i===oi));
+  updStatus();
+}
+function updStatus(){$('qStatus').textContent=T().answered(Object.keys(answers).length,QTOTAL)}
+function grade(){
+  const done=Object.keys(answers).length;
+  if(done<QTOTAL){
+    $('qStatus').textContent=T().remain(QTOTAL-done);
+    const first=CH.flatMap((c,ci)=>D(ci).q.map((q,qi)=>ci+'-'+qi)).find(k=>!(k in answers));
+    if(first)$('q_'+first).scrollIntoView({block:'center'});
+    return;
+  }
+  graded=true;
+  lastPer=CH.map((c,ci)=>({ci,ok:D(ci).q.filter((q,qi)=>answers[ci+'-'+qi]===q.a).length,total:D(ci).q.length}));
+  drawQ();buildReport(lastPer);$('report').scrollIntoView({behavior:'smooth'});
+}
+function resetQuiz(){
+  answers={};graded=false;lastPer=null;certName='';certRef=null;
+  drawQ();
+  $('reportBox').innerHTML=`<p class="mut">${T().repEmpty}</p>`;
+  $('certArea').innerHTML=`<p class="mut">${T().certEmpty}</p>`;
+  $('quiz').scrollIntoView({behavior:'smooth'});
+}
+
+/*══ 12. REPORT ══*/
+function buildReport(per){
+  const ok=per.reduce((s,p)=>s+p.ok,0),pc=ok/QTOTAL*100;
+  const weak=per.filter(p=>p.ok/p.total<0.5),strong=per.filter(p=>p.ok===p.total);
+  const col=v=>v>=100?'#1e6055':v>=50?'#8a6116':'#b32d0f';
+  $('reportBox').innerHTML=`<div class="rgrid">
+      <div class="stat"><b style="color:${col(pc)}">${fmt(pc,0)}%</b><span>${T().repTotal(ok,QTOTAL)}</span></div>
+      <div class="stat"><b style="color:#1e6055">${strong.length}</b><span>${T().repFull}</span></div>
+      <div class="stat"><b style="color:#b32d0f">${weak.length}</b><span>${T().repWeak}</span></div>
+      <div class="stat"><b style="color:${pc>=70?'#1e6055':'#b32d0f'}">${pc>=70?T().pass:T().fail}</b><span>${T().repPassLabel}</span></div>
+    </div><h3>${T().repByCh}</h3>
+    ${per.map(p=>{const v=p.ok/p.total*100;return `<div class="chrow">
+      <span>${T().chWord(CH[p.ci].id)} · ${D(p.ci).t}</span>
+      <span class="tr"><i style="width:${v}%;background:${col(v)}"></i></span>
+      <span class="num">${p.ok}/${p.total}</span></div>`}).join('')}
+    <h3 style="margin-top:24px">${T().repSugg}</h3>
+    ${weak.length?`<p>${T().repWeakMsg(weak.map(p=>T().chWord(CH[p.ci].id)+' '+D(p.ci).t).join(', '))}</p>`:`<p>${T().repGoodMsg}</p>`}
+    ${strong.length?`<p class="mut">${T().repStrong(strong.map(p=>T().chWord(CH[p.ci].id)).join(', '))}</p>`:''}`;
+  buildCert(pc,ok);
+}
+
+/*══ 13. CERTIFICATE ══*/
+function buildCert(pc,ok){
+  const a=$('certArea');
+  if(pc<70){a.innerHTML=`<p class="mut">${T().certLow(fmt(pc,0))}</p>`;return}
+  if(!certRef)certRef='SHRM-'+Date.now().toString(36).toUpperCase().slice(-6);
+  a.innerHTML=`<div class="noprint" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px;align-items:flex-end">
+      <div style="flex:1;min-width:250px"><label>${T().certName}</label><input type="text" id="cName" value="${certName}" placeholder="${T().certPh}" oninput="certNm()"></div>
+      <button class="btn pp" onclick="window.print()">${T().certPrint}</button></div>
+    <div class="cert"><div class="seal">🏅</div><h3>${T().certHead}</h3>
+      <div class="nm" id="cNameOut">${certName||'—'}</div>
+      <p class="meta">${T().certBody(ok,QTOTAL,fmt(pc,0))}</p>
+      <div class="cfoot">
+        <div>${T().certDate(new Date().toLocaleDateString(UI[L].locale,{day:'numeric',month:'long',year:'numeric'}))}</div>
+        <div>${T().certRef(certRef)}</div>
+      </div></div>`;
+}
+function certNm(){certName=$('cName').value.trim();$('cNameOut').textContent=certName||'—'}
+
+/*══ 14. INIT ══*/
+document.addEventListener('DOMContentLoaded',()=>{applyFS();setLang(L)});
+</script>
+</body>
+</html>
